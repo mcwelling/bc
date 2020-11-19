@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
+//IMPORTANT: Remember to import your components
 import LayoutView from '@/views/LayoutView.vue'
+import EventView from '@/views/EventsView.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +25,12 @@ const routes: Array<RouteConfig> = [
     path: '/layout',
     name: 'Layout',
     component: LayoutView
+  },
+  {
+    path: '/events',
+    name: 'Events',
+    //component: () => import(/* webpackChunkName: "events" */ '../views/EventsView.vue')
+    component: EventView
   }
 ]
 

@@ -205,7 +205,6 @@ export default class ServiceParent extends Vue {
     });
   }
   createNew() {
-    this.updateId();
     this.showOkBanner =  false;
     this.showBlockData = [];
     //this.errorMessage = "Not Imnplemented Yet";
@@ -218,7 +217,10 @@ export default class ServiceParent extends Vue {
       console.log("Updated ", result);
       this.okMessage = "Updated successfully";
       this.showOkBanner = true;
+      this.getAll();
+      this.updateId();
     });
+    
   }
 }
 </script>

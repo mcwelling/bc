@@ -44,7 +44,7 @@
                     >Get All</b-button
                   >
                   <b-button variant="success" class="ml-2" @click="createNew()"
-                    >Create Pub</b-button
+                    >New Block</b-button
                   >
                 </b-input-group>
               </b-col>
@@ -65,7 +65,37 @@
             </b-row>
           </b-card-text>
         </b-card>
+        <hr /> <!-- Add space-->
       </b-container>
+      <!--
+        
+        TEST
+        
+        -->
+       <b-container hidden="true">
+         <b-card title="New Block" bg-variant="dark" text-variant="white">
+          <b-card-text>
+            <b-container>
+              <b-row >
+                <!-- label -->
+                <b-col sm="3" class="offset-sm-2 text-left">
+                  <label>Data:</label>
+                </b-col>
+                <!-- form -->
+                <b-col sm="6">
+                  <b-form-textarea size="sm"></b-form-textarea>
+                  <!-- <b-form-textarea size="sm" v-model="data"></b-form-textarea> -->
+                </b-col>
+              </b-row>
+            </b-container>
+          </b-card-text>
+        </b-card>
+      </b-container>
+       <!-- 
+        
+        TEST! 
+
+        -->
     </div>
     <hr />
     <div class="row">
@@ -148,9 +178,9 @@ export default class ServiceParent extends Vue {
     this.showErrorBanner = false;
     this.showOkBanner =  false;
     this.blockData = [];
+    //remember c is the argument passed into this function
     const endpoint = this.defaultServerAddress + "/blocks/" + c.id;
     //Same idea as get but it overrides existing data
-    //remember c is the argument passed into this function
     this.$http.put<BlockData>(endpoint, c).then((response) => {
       const result = response.data;
       console.log("Updated ", result);
@@ -163,6 +193,16 @@ export default class ServiceParent extends Vue {
     this.blockData = [];
     this.errorMessage = "Not Imnplemented Yet";
     this.showErrorBanner = true;
+    const endpoint = this.defaultServerAddress + "/blocks";
+    /*
+    //Same idea as get but it overrides existing data
+    this.$http.put<BlockData>(endpoint, c)
+    .then((response) => {
+      const result = response.data;
+      console.log("Updated ", result);
+      this.okMessage = "Added Block: " + c.id + " successfully";
+      this.showOkBanner = true;
+      */
   }
 }
 </script>

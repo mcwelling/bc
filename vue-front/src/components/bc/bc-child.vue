@@ -1,22 +1,9 @@
 <template>
   <div>
-    <b-card :title="'Block ' + cardData.id" >
+    <b-card :title="'Block ' + cardData.id" bg-variant="dark" text-variant="white">
       <!--<b-card-text> Details </b-card-text> -->
       <b-card-text>
         <b-container>
-          <!-- ID 
-          <b-row class="my-1">
-            <b-col sm="3" class="offset-sm-2 text-left">
-              <label>ID:</label>
-            </b-col>
-            <b-col sm="6">
-              <b-form-input
-                size="sm"
-                v-model="cardData.id"
-                readonly
-              ></b-form-input>
-            </b-col>
-          </b-row>-->
           <!-- ParentHash -->
           <b-row class="my-1">
             <b-col sm="3" class="offset-sm-2 text-left">
@@ -32,7 +19,7 @@
               <label>Data:</label>
             </b-col>
             <b-col sm="6">
-              <b-form-input size="sm" v-model="cardData.data"></b-form-input>
+              <b-form-textarea size="sm" v-model="cardData.data"></b-form-textarea>
             </b-col>
           </b-row>
           <!-- Nonce -->
@@ -60,7 +47,7 @@
                 variant="primary"
                 size="sm"
                 @click="updateClass()"
-                >Update</b-button
+                >Mine</b-button
               >
             </b-col>
           </b-row>

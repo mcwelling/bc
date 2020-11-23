@@ -111,6 +111,7 @@
         <bc-child
           :card-data="block" 
           @update-class-info="onUpdateClass"
+          @delete-class-info="onDeleteClass"
         ></bc-child>
       </div>
     </div>
@@ -144,8 +145,8 @@ export default class ServiceParent extends Vue {
     }
 
   //used to increment the default card id when creating new cards
-  updateId(){
-    this.defaultCard.id += 1;
+  updateId(n: number){
+    this.defaultCard.id += n;
   }
 
   searchById() {
@@ -195,7 +196,7 @@ export default class ServiceParent extends Vue {
     this.showBlockData = [];
     //remember c is the argument passed into this function
     const endpoint = this.defaultServerAddress + "/blocks/" + c.id;
-    //Same idea as get but it overrides existing data
+    //Same idea as get but it ovewrites existing data
     this.$http.put<BlockData>(endpoint, c)
     .then((response) => {
       const result = response.data;
@@ -204,6 +205,25 @@ export default class ServiceParent extends Vue {
       this.showOkBanner = true;
     });
   }
+
+ onDeleteClass(c: BlockData) {
+    this.showErrorBanner = false;
+    this.showOkBanner =  false;
+    this.showBlockData = [];
+    //remember c is the argument passed into this function
+    const endpoint = this.defaultServerAddress + "/blocks/" + c.id;
+    //Delete the entry
+    this.$http.delete<BlockData>(endpoint, c)
+    .then((response) => {
+      const result = response.data;
+      console.log("Updated ", result);
+      this.okMessage = "Successfully deleted new block";
+      this.showOkBanner = true;
+      this.getAll();
+      //this.updateId(-1); //This numbering will cause the numbering to be off if you don't delete the most recent block
+    });
+  }
+
   createNew() {
     this.showOkBanner =  false;
     this.showBlockData = [];
@@ -215,10 +235,10 @@ export default class ServiceParent extends Vue {
     .then((response) => {
       const result = response.data;
       console.log("Updated ", result);
-      this.okMessage = "Updated successfully";
+      this.okMessage = "Successfully created new block";
       this.showOkBanner = true;
       this.getAll();
-      this.updateId();
+      this.updateId(1);
     });
     
   }

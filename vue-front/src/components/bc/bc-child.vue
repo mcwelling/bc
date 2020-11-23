@@ -40,17 +40,28 @@
               <b-form-input size="sm" v-model="cardData.blockhash" readonly></b-form-input>
             </b-col>
           </b-row>
-          <b-row class="my-2">
-            <b-col sm="2" class="offset-sm-2">
-              <b-button
-                :disabled="!cardDataChanged"
-                variant="primary"
-                size="sm"
-                @click="updateClass()"
-                >Mine</b-button
-              >
-            </b-col>
-          </b-row>
+            <b-container>
+              <hr style="background-color:white"/>
+              <b-row>
+                <b-col>
+                  <b-button
+                    variant="danger"
+                    size="sm"
+                    @click="deleteClass()"
+                    >Delete Block</b-button
+                  >
+                </b-col>
+                <b-col >
+                  <b-button
+                    :disabled="!cardDataChanged"
+                    variant="primary"
+                    size="sm"
+                    @click="updateClass()"
+                    >Mine</b-button
+                  >
+                </b-col>
+              </b-row>
+          </b-container>  
         </b-container>
       </b-card-text>
     </b-card>
@@ -70,6 +81,11 @@ export default class EventsChild extends Vue {
   @Emit('update-class-info')
   updateClass() {
     this.cardDataChanged = false
+    return this.cardData
+  }
+
+  @Emit('delete-class-info')
+  deleteClass() {
     return this.cardData
   }
 

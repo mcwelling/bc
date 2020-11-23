@@ -8,6 +8,7 @@
       <router-link to="/dynamic">Dynamic</router-link> |
       <router-link to="/webservices">Web Services</router-link> |
       <router-link to="/simple_state">Simple State</router-link> |
+      <router-link to="/bc">BC</router-link> |
     </div>
     <router-view/>
   </div>

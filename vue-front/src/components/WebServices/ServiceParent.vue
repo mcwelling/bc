@@ -69,13 +69,16 @@
     </div>
     <hr />
     <div class="row">
+      <!--This loop handles the actual display of the updated array "courseList: CourseType[] = []"-->
       <div
         class="col-sm-6 mb-2"
-        v-for="(course, index) in courseList"
+        v-for="(course, index) in courseList" 
         :key="index"
       >
+      <!-- Pass in cards to display and give each child an event called update-class-info
+      call "onUpdateClass" if this event occurs-->
         <pub-child
-          :card-data="course"
+          :card-data="course" 
           @update-class-info="onUpdateClass"
         ></pub-child>
       </div>
@@ -106,16 +109,17 @@ export default class ServiceParent extends Vue {
     this.showOkBanner =  false; //cleanup
     this.courseList = []; //cleanup
     const endpoint = this.defaultServerAddress + "/courses/" + this.searchPubId; //get data from web server
+    //The code below is asynchronous
     this.$http //$ means it's associated with a view, http says it's web based
       .get<CourseType>(endpoint) // CourseTyoe is a stereotype defined in CourseType.ts
-      .then((response) => {
+      .then((response) => { //runs if the get is successful. Don't have to know when it will finish
         this.okMessage = "Fetched Course with ID: " + this.searchPubId;
         this.showOkBanner = true;
         const result = response.data;
         this.courseList = [result];
         console.log(result);
       })
-      .catch((err: AxiosError) => {
+      .catch((err: AxiosError) => { //runs if the get errors
         console.log("ERROR ", err.response);
         this.errorMessage = "HTTP Error:" 
             + err.response!.status
@@ -144,6 +148,8 @@ export default class ServiceParent extends Vue {
     this.showOkBanner =  false;
     this.courseList = [];
     const endpoint = this.defaultServerAddress + "/courses/" + c.id;
+    //Same idea as get but it overrides existing data
+    //remember c is the argument passed into this function
     this.$http.put<CourseType>(endpoint, c).then((response) => {
       const result = response.data;
       console.log("Updated ", result);

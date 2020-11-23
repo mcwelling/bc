@@ -30,7 +30,7 @@
         <bc-child
           :card-data="block"
           @mine="onUpdateClass"
-          @delete-class-info="onDeleteClass"
+          @delete="onDeleteClass"
         ></bc-child>
       </div>
     </div>
@@ -47,12 +47,12 @@ import { BlockData } from "./BlockData";
 @Component({ components: { "bc-child": Block } }) //define the element that will be used in the html above
 export default class BlockParent extends Vue {
   private arrBlocks: BlockData[] = [
-    {
+      {
       id: 0,
-      parenthash: "1111111111111111",
+      parenthash: "0000000000000000",
       data: "New Block",
       nonce: 0,
-      blockhash: "0000000000000000"
+      blockhash: "1111111111111111"
       }  
 
   ];
@@ -73,16 +73,18 @@ export default class BlockParent extends Vue {
   }
 
   createNew() {
-    const defaultCard = {
-      //id: this.arrBlocks[this.arrBlocks.length-1].id + 1,
+    const num = Math.random()*10e16;
+    const hex = num.toString(16);
+    const newCard = {
+      //id: this.arrBlocks[this.arrBlocks.length-1].,
       id: this.arrBlocks.length,
-      parenthash: "1111111111111111",
+      parenthash: this.arrBlocks[this.arrBlocks.length-1].blockhash, //"1111111111111111",
       data: "New Block",
       nonce: 0,
-      blockhash: "0000000000000000"
+      blockhash:  hex//String(Math.random()*10e16) //"0000000000000000"
       }  
 
-    this.arrBlocks.push(defaultCard);
+    this.arrBlocks.push(newCard);
   }
 }
 </script>

@@ -85,7 +85,7 @@ export default class EventsChild extends Vue {
     return this.cardData
   }
 
-  @Emit('delete-class-info')
+  @Emit('delete')
   deleteClass() {
     return this.cardData
   }

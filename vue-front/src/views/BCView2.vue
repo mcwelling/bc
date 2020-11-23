@@ -9,12 +9,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import ServicesParent from '@/components/bc2/bc-parent.vue'
+import BlockParent from '@/components/bc2/bc-parent.vue'
 
 @Component({
-  components: {"web-services-demo": ServicesParent}
+  components: {"web-services-demo": BlockParent}
 })
-export default class WebServicesView extends Vue {
+export default class BCView extends Vue {
 
 }
 </script>

@@ -108,7 +108,7 @@ export default class ServiceParent extends Vue {
     this.showErrorBanner =  false; //cleanup
     this.showOkBanner =  false; //cleanup
     this.blockData = []; //cleanup
-    const endpoint = this.defaultServerAddress + "/courses/" + this.searchPubId; //get data from web server
+    const endpoint = this.defaultServerAddress + "/blocks/" + this.searchPubId; //get data from web server
     //The code below is asynchronous
     this.$http //$ means it's associated with a view, http says it's web based
       .get<BlockData>(endpoint) // CourseTyoe is a stereotype defined in BlockData.ts
@@ -133,11 +133,11 @@ export default class ServiceParent extends Vue {
     this.showErrorBanner = false;
     this.showOkBanner =  false;
     this.blockData = [];
-    const endpoint = this.defaultServerAddress + "/courses";
+    const endpoint = this.defaultServerAddress + "/blocks";
     this.$http.get<BlockData[]>(endpoint).then((response) => {
       const result = response.data;
       this.blockData = result;
-      this.okMessage = "Fetched All Courses - Total Received: " + this.blockData.length ;
+      this.okMessage = "Fetched All Blocks - Total Received: " + this.blockData.length ;
       this.showOkBanner = true;
       console.log(result);
     });
@@ -147,7 +147,7 @@ export default class ServiceParent extends Vue {
     this.showErrorBanner = false;
     this.showOkBanner =  false;
     this.blockData = [];
-    const endpoint = this.defaultServerAddress + "/courses/" + c.id;
+    const endpoint = this.defaultServerAddress + "/blocks/" + c.id;
     //Same idea as get but it overrides existing data
     //remember c is the argument passed into this function
     this.$http.put<BlockData>(endpoint, c).then((response) => {

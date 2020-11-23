@@ -99,10 +99,10 @@
     </div>
     <hr />
     <div class="row">
-      <!--This loop handles the actual display of the updated array "blockData: BlockData[] = []"-->
+      <!--This loop handles the actual display of the updated array "showBlockData: BlockData[] = []"-->
       <div
         class="col-sm-6 mb-2"
-        v-for="(block, index) in blockData" 
+        v-for="(block, index) in showBlockData" 
         :key="index"
       >
       <!-- Pass in cards to display and give each child an event called update-class-info
@@ -126,7 +126,7 @@ import { BlockData } from "./BlockData";
 
 @Component({ components: { "bc-child": Pub } }) //define the element that will be used in the html above
 export default class ServiceParent extends Vue {
-  private blockData: BlockData[] = [];
+  private showBlockData: BlockData[] = [];
   private defaultServerAddress = "http://localhost:3000";
   private searchPubId = "1";
   private showErrorBanner = false;
@@ -134,11 +134,25 @@ export default class ServiceParent extends Vue {
   private showOkBanner = false;
   private okMessage = "";
 
+  //define default data to be used to create new blocks
+  private defaultCard = {
+      id: 1,
+      parenthash: "1111111111111111",
+      data: "New Block",
+      nonce: 0,
+      blockhash: "0000000000000000"
+    }
+
+  //used to increment the default card id when creating new cards
+  updateId(){
+    this.defaultCard.id += 1;
+  }
+
   searchById() {
     console.log("searchbyid");
     this.showErrorBanner =  false; //cleanup
     this.showOkBanner =  false; //cleanup
-    this.blockData = []; //cleanup
+    this.showBlockData = []; //cleanup
     const endpoint = this.defaultServerAddress + "/blocks/" + this.searchPubId; //get data from web server
     //The code below is asynchronous
     this.$http //$ means it's associated with a view, http says it's web based
@@ -147,7 +161,7 @@ export default class ServiceParent extends Vue {
         this.okMessage = "Fetched Course with ID: " + this.searchPubId;
         this.showOkBanner = true;
         const result = response.data;
-        this.blockData = [result];
+        this.showBlockData = [result];
         console.log(result);
       })
       .catch((err: AxiosError) => { //runs if the get errors
@@ -163,12 +177,13 @@ export default class ServiceParent extends Vue {
     console.log("getall");
     this.showErrorBanner = false;
     this.showOkBanner =  false;
-    this.blockData = [];
+    this.showBlockData = [];
     const endpoint = this.defaultServerAddress + "/blocks";
-    this.$http.get<BlockData[]>(endpoint).then((response) => {
+    this.$http.get<BlockData[]>(endpoint)
+    .then((response) => {
       const result = response.data;
-      this.blockData = result;
-      this.okMessage = "Fetched All Blocks - Total Received: " + this.blockData.length ;
+      this.showBlockData = result;
+      this.okMessage = "Fetched All Blocks - Total Received: " + this.showBlockData.length ;
       this.showOkBanner = true;
       console.log(result);
     });
@@ -177,11 +192,12 @@ export default class ServiceParent extends Vue {
   onUpdateClass(c: BlockData) {
     this.showErrorBanner = false;
     this.showOkBanner =  false;
-    this.blockData = [];
+    this.showBlockData = [];
     //remember c is the argument passed into this function
     const endpoint = this.defaultServerAddress + "/blocks/" + c.id;
     //Same idea as get but it overrides existing data
-    this.$http.put<BlockData>(endpoint, c).then((response) => {
+    this.$http.put<BlockData>(endpoint, c)
+    .then((response) => {
       const result = response.data;
       console.log("Updated ", result);
       this.okMessage = "Updated Course with ID: " + c.id + " successfully";
@@ -189,20 +205,20 @@ export default class ServiceParent extends Vue {
     });
   }
   createNew() {
+    this.updateId();
     this.showOkBanner =  false;
-    this.blockData = [];
-    this.errorMessage = "Not Imnplemented Yet";
-    this.showErrorBanner = true;
+    this.showBlockData = [];
+    //this.errorMessage = "Not Imnplemented Yet";
+    //this.showErrorBanner = true;
     const endpoint = this.defaultServerAddress + "/blocks";
-    /*
-    //Same idea as get but it overrides existing data
-    this.$http.put<BlockData>(endpoint, c)
+    //FIX ME: Post is not idempotent
+    this.$http.post<BlockData>(endpoint, this.defaultCard)
     .then((response) => {
       const result = response.data;
       console.log("Updated ", result);
-      this.okMessage = "Added Block: " + c.id + " successfully";
+      this.okMessage = "Updated successfully";
       this.showOkBanner = true;
-      */
+    });
   }
 }
 </script>

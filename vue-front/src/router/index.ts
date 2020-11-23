@@ -44,6 +44,11 @@ const routes: Array<RouteConfig> = [
     path: '/webservices',
     name: 'WebServices',
     component: WebServicesView
+  },
+  {
+    path: '/simple_state',
+    name: 'SimpleState',
+    component: () => import(/* webpackChunkName: "state" */ '../views/AppSimpleState.vue')
   }
 ]
 

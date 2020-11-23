@@ -1,7 +1,8 @@
-import { FormSelectPlugin } from 'bootstrap-vue';
+//import { FormSelectPlugin } from 'bootstrap-vue';
 import {VuexModule, Module, Mutation, Action}from 'vuex-module-decorators'
-import {CourseType} from './CourseTypes'
+//import {CourseType} from './CourseTypes'
 
+//the code below wokrs with the simple state app
 @Module({stateFactory: true, name: 'simpleCounter'})
 export default class SimpleStoreModule extends VuexModule{
     private _counter = 0;

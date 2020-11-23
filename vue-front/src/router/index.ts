@@ -54,6 +54,11 @@ const routes: Array<RouteConfig> = [
     path: '/bc',
     name: 'BC',
     component: () => import(/* webpackChunkName: "state" */ '../views/BCView.vue')
+  },
+  {
+    path: '/bc2',
+    name: 'BC2',
+    component: () => import(/* webpackChunkName: "state" */ '../views/BCView2.vue')
   }
 ]
 

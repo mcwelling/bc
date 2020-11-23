@@ -9,6 +9,7 @@
       <router-link to="/webservices">Web Services</router-link> |
       <router-link to="/simple_state">Simple State</router-link> |
       <router-link to="/bc">BC</router-link> |
+      <router-link to="/bc2">BC2</router-link> |
     </div>
     <router-view/>
   </div>
@@ -20,7 +21,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #ffffff;
+  background-color: #19202c;
 }
 
 #nav {
@@ -29,7 +31,7 @@
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #ffffff;
 }
 
 #nav a.router-link-exact-active {

@@ -5,7 +5,7 @@ import Home from '../views/Home.vue'
 import LayoutView from '@/views/LayoutView.vue'
 import EventView from '@/views/EventsView.vue'
 import DynamicView from '@/views/DynamicView.vue'
-import WebServiceView from '@/views/WebServicesView.vue'
+import WebServicesView from '@/views/WebServicesView.vue'
 
 Vue.use(VueRouter)
 
@@ -41,10 +41,9 @@ const routes: Array<RouteConfig> = [
     component: DynamicView
   },
   {
-    path: '/web',
-    name: 'WebService',
-    //component: () => import(/* webpackChunkName: "events" */ '../views/EventsView.vue')
-    component: WebServiceView
+    path: '/webservices',
+    name: 'WebServices',
+    component: WebServicesView
   }
 ]
 

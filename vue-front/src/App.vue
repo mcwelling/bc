@@ -4,7 +4,9 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/layout">Layout</router-link> |
-      <router-link to="/events">Events</router-link>
+      <router-link to="/events">Events</router-link> |
+      <router-link to="/dynamic">Dynamic</router-link> |
+      <router-link to="/web ">Web Service</router-link>
     </div>
     <router-view/>
   </div>

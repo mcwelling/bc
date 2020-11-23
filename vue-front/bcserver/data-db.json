@@ -1,11 +1,11 @@
 {
-    "blocks" : [
-        {
-            "id" : 1,
-            "parenthash" : "0000000000000000",
-            "data" : "test",
-            "nonce" : "0",
-            "blockhash" : "1111111111111111"
-        }
-    ]
+  "blocks": [
+    {
+      "id": 1,
+      "parenthash": "0000000000000000",
+      "data": "test2",
+      "nonce": "0",
+      "blockhash": "1111111111111111"
+    }
+  ]
 }

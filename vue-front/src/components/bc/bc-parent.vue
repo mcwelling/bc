@@ -72,15 +72,16 @@
       <!--This loop handles the actual display of the updated array "blockData: BlockData[] = []"-->
       <div
         class="col-sm-6 mb-2"
-        v-for="(course, index) in blockData" 
+        v-for="(block, index) in blockData" 
         :key="index"
       >
       <!-- Pass in cards to display and give each child an event called update-class-info
       call "onUpdateClass" if this event occurs-->
-        <pub-child
-          :card-data="course" 
+      <!-- note: the custom element "bc-child" directly corresponds with the element defined in the ts script-->
+        <bc-child
+          :card-data="block" 
           @update-class-info="onUpdateClass"
-        ></pub-child>
+        ></bc-child>
       </div>
     </div>
   </div>
@@ -93,7 +94,7 @@ import Pub from "./bc-child.vue";
 import { AxiosResponse, AxiosError } from "axios";
 import { BlockData } from "./BlockData";
 
-@Component({ components: { "bc-child": Pub } })
+@Component({ components: { "bc-child": Pub } }) //define the element that will be used in the html above
 export default class ServiceParent extends Vue {
   private blockData: BlockData[] = [];
   private defaultServerAddress = "http://localhost:3000";

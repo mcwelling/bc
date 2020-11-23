@@ -1,10 +1,10 @@
 <template>
   <div>
-    <b-card title="Block">
+    <b-card :title="'Block ' + cardData.id" >
       <!--<b-card-text> Details </b-card-text> -->
       <b-card-text>
         <b-container>
-          <!-- ID -->
+          <!-- ID 
           <b-row class="my-1">
             <b-col sm="3" class="offset-sm-2 text-left">
               <label>ID:</label>
@@ -16,14 +16,14 @@
                 readonly
               ></b-form-input>
             </b-col>
-          </b-row>
+          </b-row>-->
           <!-- ParentHash -->
           <b-row class="my-1">
             <b-col sm="3" class="offset-sm-2 text-left">
-              <label>ParentHash:</label>
+              <label>Parent Hash:</label>
             </b-col>
             <b-col sm="6">
-              <b-form-input size="sm" v-model="cardData.parenthash"></b-form-input>
+              <b-form-input size="sm" v-model="cardData.parenthash" readonly></b-form-input>
             </b-col>
           </b-row>
           <!-- Data -->
@@ -38,19 +38,19 @@
           <!-- Nonce -->
           <b-row class="my-1">
             <b-col sm="3" class="offset-sm-2 text-left">
-              <label>Title:</label>
+              <label>Nonce:</label>
             </b-col>
             <b-col sm="6">
-              <b-form-input size="sm" v-model="cardData.nonce"></b-form-input>
+              <b-form-input size="sm" v-model="cardData.nonce" readonly></b-form-input>
             </b-col>
           </b-row>
           <!-- BlockHash -->
           <b-row class="my-1">
             <b-col sm="3" class="offset-sm-2 text-left">
-              <label>Title:</label>
+              <label>Block Hash:</label>
             </b-col>
             <b-col sm="6">
-              <b-form-input size="sm" v-model="cardData.blockhash"></b-form-input>
+              <b-form-input size="sm" v-model="cardData.blockhash" readonly></b-form-input>
             </b-col>
           </b-row>
           <b-row class="my-2">

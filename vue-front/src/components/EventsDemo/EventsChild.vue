@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card :title="cardName">
+    <b-card :title="cardName" bg-variant="dark" text-variant="white">
       <b-card-text>
         Im a child component, this text does not change
       </b-card-text>

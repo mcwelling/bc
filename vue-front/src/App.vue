@@ -15,6 +15,7 @@
   </div>
 </template>
 
+<!-- if you change background change color here, change it in index.html too-->
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -22,7 +23,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #ffffff;
-  background-color: #19202c;
+  background-color: #1a1f27; 
 }
 
 #nav {

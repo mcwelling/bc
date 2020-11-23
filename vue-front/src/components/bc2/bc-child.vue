@@ -56,7 +56,7 @@
                     :disabled="!cardDataChanged"
                     variant="primary"
                     size="sm"
-                    @click="updateClass()"
+                    @click="mine()"
                     >Mine</b-button
                   >
                 </b-col>
@@ -75,11 +75,20 @@ import { BlockData } from "./BlockData";
 
 @Component
 export default class EventsChild extends Vue {
+  ///////////////////////////////////////////////////////////
+  //FIXME: some values will need to be bound to the appropriate values from other children
   @Prop() private cardData!: BlockData; //!: means can't be null
+  /*private cardData = {
+      id: 1,
+      parenthash: "1111111111111111",
+      data: "New Block",
+      nonce: 0,
+      blockhash: "0000000000000000"
+  }*/
   private cardDataChanged = false
-
-  @Emit('update-class-info')
-  updateClass() {
+/////////////////////////////////////////////////////////////////
+  @Emit('mine')
+  mine() {
     this.cardDataChanged = false
     return this.cardData
   }

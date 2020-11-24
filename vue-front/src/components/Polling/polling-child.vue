@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card :title="'Block ' + cardData.id" bg-variant="dark" text-variant="white">
+    <b-card :title="'Option ' + cardData.id" bg-variant="secondary" text-variant="white">
       <!--<b-card-text> Details </b-card-text> -->
       <b-card-text>
         <b-container>

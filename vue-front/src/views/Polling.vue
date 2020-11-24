@@ -9,10 +9,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import BlockParent from '@/components/polling/bc-parent.vue'
+import PollingParent from "@/components/Polling/polling-parent.vue"
 
 @Component({
-  components: {"web-services-demo": BlockParent}
+  components: {"web-services-demo": PollingParent}
 })
 export default class BCView extends Vue {
 

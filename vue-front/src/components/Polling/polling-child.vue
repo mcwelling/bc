@@ -1,9 +1,10 @@
 <template>
     <div>
-        <!--<b-card :title="'Proposal ' + cardData.id" bg-variant="secondary" text-variant="white"> -->
         <b-card bg-variant="secondary" text-variant="white">
             <b-row align-h="between">
+                <!-- Title -->
                 <b-col cols="auto" ><strong>Proposal {{cardData.id}}</strong></b-col>
+                <!-- Delete Button -->
                 <b-col cols="auto" class="mb-2">
                     <b-button
                         variant="danger"
@@ -33,19 +34,6 @@
                             @click="addOption()"
                             >Add Option</b-button>
                     </b-row>
-                    <!--
-                    <b-container>
-                    <hr style="background-color:white"/>
-                    <b-row>
-                        <b-col>
-                        <b-button
-                            variant="danger"
-                            size="sm"
-                            @click="deleteProposal()"
-                            >Delete Proposal</b-button>
-                        </b-col>
-                    </b-row>
-                </b-container>  Other Buttons-->
                 </b-container>
             </b-card-text>
         </b-card>
@@ -65,29 +53,21 @@ export default class EventsChild extends Vue {
 
     @Emit('delete')
     deleteProposal() {
-    return this.cardData
+        return this.cardData
     }
 
-    @Watch('cardData', {immediate: false, deep: true})
+    /*@Watch('cardData', {immediate: false, deep: true})
     onCardDataChanged(){
         this.cardDataChanged = true
-    }
+    }*/
 
     //Option Creation
     private arrOptions: string[] = [];
-    optionCountField = "0";
-    optionCount = 0;
 
     addOption(){
         this.cardData.options.push("");
     }
 
-    @Watch("optionCountField")
-    onLoopCountFieldChanged() {
-        if (this.optionCountField === "") this.optionCountField = "0";
-        if (parseInt(this.optionCountField)<0) this.optionCountField = "0";
-        this.optionCount = parseInt(this.optionCountField);
-    }
 }
 </script>
 

@@ -20,20 +20,20 @@
                 <b-col>
                     <hr style="background-color:grey"/>
                     <div class="row">
-                        <!--This loop handles the actual display of the updated array "arrBlocks: PollData[] = []"-->
-                        <!-- block is defined here as an element in the array-->
+                        <!-- This v-for handles the actual display of the data in the array, arrPollData -->
+                        <!-- block is represents the value (type PollData) in the array -->
                         <div
                         class="col-sm-6 mb-2"
-                        v-for="(block, index) in arrBlocks" 
+                        v-for="(block, index) in arrPollData" 
                         :key="index"
                         >
-                        <!-- Pass in cards to display and give each child an event called update-class-info
-                        call "onUpdateClass" if this event occurs-->
-                        <!-- note: the custom element "bc-child" directly corresponds with the element defined in the ts script-->
-                            <bc-child
+                        <!-- :card-data="block" passes pollData from the above v-for into the poll-child
+                        @delete tells the parent to look out for the @delete emit event from the child and calls the onDeleteClass method.
+                        Note: the custom element "poll-child" directly corresponds with the definition in the ts script-->
+                            <poll-child
                             :card-data="block"
                             @delete="onDeleteClass"
-                            ></bc-child>
+                            ></poll-child>
                         </div>
                         <!-- New Proposal Button -->
                         <div class="col-sm-6 mb-2 mt-5">
@@ -75,14 +75,15 @@
   
 
 <script lang="ts">
+//Note: Prop and Emit are not used and can be removed if not used before generating the production build
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 import Block from "./polling-child.vue";
 import { PollData } from "./PollData";
 
 
-@Component({ components: { "bc-child": Block } }) //define the element that will be used in the html above
+@Component({ components: { "poll-child": Block } }) //define the element that will be used in the html above
 export default class BlockParent extends Vue {
-    private arrBlocks: PollData[] = [];
+    private arrPollData: PollData[] = [];
 
 
     onUpdateClass(n: PollData){
@@ -90,8 +91,8 @@ export default class BlockParent extends Vue {
     }
 
     onDeleteClass(c: PollData) {
-    const x = this.arrBlocks.indexOf(c) //this line would not scale well, but is suitable for prototyping
-    this.arrBlocks.splice(x,1);
+    const x = this.arrPollData.indexOf(c) //this line would not scale well, but is suitable for prototyping
+    this.arrPollData.splice(x,1);
     }
 
 
@@ -105,17 +106,17 @@ export default class BlockParent extends Vue {
     createNewCard(){
         const empty: string[] = [];
         const newCard = {
-            id: this.arrBlocks.length + 1,
+            id: this.arrPollData.length + 1,
             description: "",
             options: empty,
         }  
-        this.arrBlocks.push(newCard);
+        this.arrPollData.push(newCard);
     }
 
     reset() {
         this.showHideConfig = false;
         this.writeInToggle = false;
-        this.arrBlocks = []; 
+        this.arrPollData = []; 
     }
 }
 </script>

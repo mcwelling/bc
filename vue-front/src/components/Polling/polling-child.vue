@@ -20,25 +20,10 @@
                         size="sm" v-model="cardData.description" 
                         placeholder="Enter a description of the proposal here."></b-form-textarea>
                     </b-row>
-                    <!-- Option Counter 
-                    This one will need more work
-                    <b-row class="my-1">
-                        <b-input-group prepend="Number of options">
-                            <b-form-input
-                                v-model="optionCountField"
-                                type="number"
-                            ></b-form-input>
-                        </b-input-group>
-                    </b-row>
-                    <hr style="background-color:white"/>
-                    <b-row v-for="(i,index) in optionCount" :key="index">
-                        <b-form-input size="sm" v-model="i.value" placeholder="Option..."> </b-form-input>
-                    </b-row>-->
-                    
                     <hr style="background-color:white"/>
                     <!--Options list-->
-                    <b-row v-for="(i,index) in cardData.options" :key="index">
-                        <b-form-input size="sm" v-model="i.value" placeholder="Option..."> </b-form-input>
+                    <b-row v-for="(i) in cardData.options" :key="i">
+                        <b-form-input size="sm" v-model="cardData[i]" placeholder="Option..."> </b-form-input>
                     </b-row>
                     <!--Add options button-->
                     <b-row class="my-1">

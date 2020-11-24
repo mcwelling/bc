@@ -23,7 +23,7 @@
                     <hr style="background-color:white"/>
                     <!--Options list-->
                     <b-row v-for="(i,index) in cardData.options" :key="index">
-                        <b-form-input size="sm" v-model="cardData[index]" placeholder="Option..."> </b-form-input>
+                        <b-form-input size="sm" v-model="cardData.options[index]" placeholder="Option..."> </b-form-input>
                     </b-row>
                     <!--Add options button-->
                     <b-row class="my-1">

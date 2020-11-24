@@ -1,0 +1,1 @@
+export type PollData = {id: number; description: string; options: string[]};

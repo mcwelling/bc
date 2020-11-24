@@ -1,60 +1,70 @@
 <template>
-  <div>
-    <b-card :title="'Proposal ' + cardData.id" bg-variant="secondary" text-variant="white">
-      <!--<b-card-text> Details </b-card-text> -->
-      <b-card-text>
-        <b-container>
-            <!-- Description -->
-            <b-row class="my-1">
-                <b-form-textarea 
-                size="sm" v-model="cardData.description" 
-                placeholder="Enter a description of the proposal here."></b-form-textarea>
-            </b-row>
-            <!-- Option Counter 
-            This one will need more work
-            <b-row class="my-1">
-                <b-input-group prepend="Number of options">
-                    <b-form-input
-                        v-model="optionCountField"
-                        type="number"
-                    ></b-form-input>
-                </b-input-group>
-            </b-row>
-            <hr style="background-color:white"/>
-            <b-row v-for="(i,index) in optionCount" :key="index">
-                <b-form-input size="sm" v-model="i.value" placeholder="Option..."> </b-form-input>
-            </b-row>-->
-            
-            <hr style="background-color:white"/>
-            <!--Options list-->
-            <b-row v-for="(i,index) in cardData.options" :key="index">
-                <b-form-input size="sm" v-model="i.value" placeholder="Option..."> </b-form-input>
-            </b-row>
-            <!--Add options button-->
-            <b-row class="my-1">
-                <b-button
-                    variant="primary"
-                    size="sm"
-                    @click="addOption()"
-                    >Add Option</b-button>
-            </b-row>
-            <!--Other Buttons-->
-            <b-container>
-              <hr style="background-color:white"/>
-              <b-row>
-                <b-col>
-                  <b-button
-                    variant="danger"
-                    size="sm"
-                    @click="deleteProposal()"
-                    >Delete Proposal</b-button>
+    <div>
+        <!--<b-card :title="'Proposal ' + cardData.id" bg-variant="secondary" text-variant="white"> -->
+        <b-card bg-variant="secondary" text-variant="white">
+            <b-row align-h="between">
+                <b-col cols="auto" ><strong>Proposal {{cardData.id}}</strong></b-col>
+                <b-col cols="auto" class="mb-2">
+                    <b-button
+                        variant="danger"
+                        size="sm"
+                        @click="deleteProposal()"
+                        >X</b-button>
                 </b-col>
-              </b-row>
-          </b-container>  
-        </b-container>
-      </b-card-text>
-    </b-card>
-  </div>
+            </b-row>
+            <b-card-text>
+                <b-container>
+                    <!-- Description -->
+                    <b-row class="my-1">
+                        <b-form-textarea 
+                        size="sm" v-model="cardData.description" 
+                        placeholder="Enter a description of the proposal here."></b-form-textarea>
+                    </b-row>
+                    <!-- Option Counter 
+                    This one will need more work
+                    <b-row class="my-1">
+                        <b-input-group prepend="Number of options">
+                            <b-form-input
+                                v-model="optionCountField"
+                                type="number"
+                            ></b-form-input>
+                        </b-input-group>
+                    </b-row>
+                    <hr style="background-color:white"/>
+                    <b-row v-for="(i,index) in optionCount" :key="index">
+                        <b-form-input size="sm" v-model="i.value" placeholder="Option..."> </b-form-input>
+                    </b-row>-->
+                    
+                    <hr style="background-color:white"/>
+                    <!--Options list-->
+                    <b-row v-for="(i,index) in cardData.options" :key="index">
+                        <b-form-input size="sm" v-model="i.value" placeholder="Option..."> </b-form-input>
+                    </b-row>
+                    <!--Add options button-->
+                    <b-row class="my-1">
+                        <b-button
+                            variant="primary"
+                            size="sm"
+                            @click="addOption()"
+                            >Add Option</b-button>
+                    </b-row>
+                    <!--
+                    <b-container>
+                    <hr style="background-color:white"/>
+                    <b-row>
+                        <b-col>
+                        <b-button
+                            variant="danger"
+                            size="sm"
+                            @click="deleteProposal()"
+                            >Delete Proposal</b-button>
+                        </b-col>
+                    </b-row>
+                </b-container>  Other Buttons-->
+                </b-container>
+            </b-card-text>
+        </b-card>
+    </div>
 </template>
   
 

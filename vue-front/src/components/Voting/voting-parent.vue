@@ -52,7 +52,7 @@
 //Note: Prop and Emit are not used and can be removed if not used before generating the production build
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 import votingBlock from "./voting-child.vue"
-import { BallotData } from "./BallotConfig";
+import { BallotData } from "./BallotData";
 
 
 @Component({ components: { "vote-child": votingBlock } }) //define the element that will be used in the html above

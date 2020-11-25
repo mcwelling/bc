@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { Component, Prop, Emit, Watch, Vue } from "vue-property-decorator";
-import { BallotData } from "./BallotConfig";
+import { BallotData } from "./BallotData";
 
 @Component
 export default class EventsChild extends Vue {

@@ -22,7 +22,7 @@
                     <hr style="background-color:grey"/>
                     <div class="row">
                         <!-- This v-for handles the actual display of the data in the array, arrPollData -->
-                        <!-- block is represents the value (type BallotData) in the array -->
+                        <!-- block is represents the value (type BallotConfig) in the array -->
                         <div
                         class="col-sm-6 mb-2"
                         v-for="(block, index) in arrPollData" 
@@ -79,19 +79,19 @@
 //Note: Prop and Emit are not used and can be removed if not used before generating the production build
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 import configBlock from "./config-child.vue";
-import { BallotData } from "./BallotData";
+import { BallotConfig } from "./BallotConfig";
 
 
 @Component({ components: { "poll-child": configBlock } }) //define the element that will be used in the html above
 export default class BlockParent extends Vue {
-    private arrPollData: BallotData[] = [];
+    private arrPollData: BallotConfig[] = [];
 
 
-    onUpdateClass(n: BallotData){
+    onUpdateClass(n: BallotConfig){
     //Mining code goes here
     }
 
-    onDeleteClass(c: BallotData) {
+    onDeleteClass(c: BallotConfig) {
     const x = this.arrPollData.indexOf(c) //this line would not scale well, but is suitable for prototyping
     this.arrPollData.splice(x,1);
     }

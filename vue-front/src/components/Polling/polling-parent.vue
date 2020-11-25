@@ -2,18 +2,19 @@
   <div>
     <div class="row">
       <b-container>
-        <b-card title="Polling Simulator" class="col-12" bg-variant="dark" text-variant="white">
+        <!-- Create Poll Card --> 
+        <b-card title="Create a Ballot" class="col-12" bg-variant="dark" text-variant="white" v-show="showHideCreate">
           <b-card-text>
             <b-row class="my-1">
               <b-col>
                   <b-button :variant="showHideConfig ? 'secondary' : 'success'" class="ml-2" @click="showHideConfig = !showHideConfig"
-                    >Create New Poll</b-button>
+                    >Create New Ballot</b-button>
               </b-col>
             </b-row>
           </b-card-text>
         </b-card>
         <!-- Hidden polling criteria Card --> 
-        <b-card title="New Poll Configuration" class="mt-3" bg-variant="dark" text-variant="white" v-show="showHideConfig">
+        <b-card title="New Ballot Configuration" class="mt-3" bg-variant="dark" text-variant="white" v-show="showHideConfig">
           <b-card-text>
             <!-- Polling Cards --> 
             <b-row class="my-1">
@@ -77,11 +78,11 @@
 <script lang="ts">
 //Note: Prop and Emit are not used and can be removed if not used before generating the production build
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
-import Block from "./polling-child.vue";
+import configBlock from "./config-child.vue";
 import { PollData } from "./PollData";
 
 
-@Component({ components: { "poll-child": Block } }) //define the element that will be used in the html above
+@Component({ components: { "poll-child": configBlock } }) //define the element that will be used in the html above
 export default class BlockParent extends Vue {
     private arrPollData: PollData[] = [];
 
@@ -95,12 +96,18 @@ export default class BlockParent extends Vue {
     this.arrPollData.splice(x,1);
     }
 
-
+    showHideCreate = true;
     showHideConfig = false;
     writeInToggle = false;
+    showHideVote = false;
 
     createNewPoll() {
-    //something goes here later
+      //cleanup
+      this.showHideCreate= false;
+      this.showHideConfig = false;
+     // this.arrPollData = []; 
+      this.showHideVote = true;
+
     }
 
     createNewCard(){

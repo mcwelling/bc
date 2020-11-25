@@ -61,9 +61,6 @@ export default class EventsChild extends Vue {
         this.cardDataChanged = true
     }*/
 
-    //Option Creation
-    private arrOptions: string[] = [];
-
     addOption(){
         this.cardData.options.push("");
     }

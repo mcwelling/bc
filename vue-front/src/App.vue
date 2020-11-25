@@ -11,6 +11,7 @@
       <router-link to="/bc">BC</router-link> |
       <router-link to="/bc2">BC2</router-link> |
       <router-link to="/polling">Polling Simulator</router-link> |
+      <router-link to="/voting">Voting Simulator</router-link> |
     </div>
     <router-view/>
   </div>

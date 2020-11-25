@@ -1,0 +1,14 @@
+{
+  "blocks": [
+    {
+      "id": 1,
+      "proposal": "",
+      "options": ["red", "blue", "green"]
+    },
+    {
+      "id": 1,
+      "proposal": "",
+      "options": ["red", "blue", "green"]
+    }
+  ]
+}

@@ -64,6 +64,11 @@ const routes: Array<RouteConfig> = [
     path: '/polling',
     name: 'PollingSimulator',
     component: () => import(/* webpackChunkName: "state" */ '../views/Polling.vue')
+  },
+  {
+    path: '/voting',
+    name: 'VotingSimulator',
+    component: () => import(/* webpackChunkName: "state" */ '../views/Voting.vue')
   }
 ]
 

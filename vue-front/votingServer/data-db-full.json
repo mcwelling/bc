@@ -1,16 +1,5 @@
 {
     "proposals" : [
-        {
-            "id": 1,
-            "proposal": "Favorite Color?",
-            "options": ["red", "blue", "green"],
-            "selected": "" 
-          },
-          {
-            "id": 2,
-            "proposal": "Favorite Number",
-            "options": ["1", "2", "3"],
-            "selected": "" 
-          }
+
     ]
 }

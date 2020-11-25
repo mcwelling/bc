@@ -3,7 +3,7 @@
     <div class="row">
       <b-container>
         <!-- Create Poll Card --> 
-        <b-card title="Create a Ballot" class="col-12" bg-variant="dark" text-variant="white">
+        <b-card title="Create a Ballot" class="col-12" bg-variant="dark" text-variant="white" v-show="showHideCreate">
           <b-card-text>
             <b-row class="my-1">
               <b-col>
@@ -86,40 +86,50 @@ import { BallotConfig } from "./BallotConfig";
 export default class BlockParent extends Vue {
     private arrBallotConfigData: BallotConfig[] = [];
 
-    showHideConfig = false;
-    writeInToggle = false;
-
-    //JSON
-    private defaultServerAddress = "http://localhost:3000";
-
 
     onDeleteClass(c: BallotConfig) {
     const x = this.arrBallotConfigData.indexOf(c) //this line would not scale well, but is suitable for prototyping
     this.arrBallotConfigData.splice(x,1);
     }
 
+    showHideCreate = true;
+    showHideConfig = false;
+    writeInToggle = false;
+    showHideVote = false;
+
+    //JSON
+    private defaultServerAddress = "http://localhost:3000";
+
     createBallot() {
       //cleanup UI
-      this.showHideConfig = false;
-
-      const endpoint = this.defaultServerAddress + "/proposals/"
-      //need to package the config in a data structure so that delete will always know the id of the json entry
-      const ballot = { 
+     //this.showHideCreate= false;
+      //this.showHideConfig = false;
+      //this.showHideVote = true;
+      //this.deleteAll(1); // errors out
+      const test = {
         id: 1,
         data: this.arrBallotConfigData
       }
-
-      console.log("deleting...")
-      //this.deleteAll(); // delete the last config
+      const endpoint = this.defaultServerAddress + "/proposals" 
+      console.log("posting...")
       this.$http
-      .delete(endpoint + "1") 
-      .finally(() => { //Placing the post inside finally is important. otherwise the post could overlap with delete
-          console.log("posting...")
-          this.$http
-          .post<BallotConfig[]>(endpoint, ballot) 
-      }) 
+      .post<BallotConfig[]>(endpoint, test)    
     }
 
+    
+    deleteAll(i: number){
+        //let deleteMe: BallotConfig[] = []
+        const endpoint = this.defaultServerAddress + "/proposals/" 
+        this.$http
+        .get<BallotConfig[]>(endpoint)
+        .then((response) => {
+          const result = response.data;
+          //deleteMe = result;
+          console.log(result);
+          //this.$http
+          //.delete(endpoint + deleteMe)
+        });
+    }
 
     createNewProposal(){
         const empty: string[] = [];

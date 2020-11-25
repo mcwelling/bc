@@ -3,7 +3,7 @@
     <div class="row">
       <b-container>
         <!-- Ballots --> 
-        <b-card title="New Ballot" class="mt-3" bg-variant="dark" text-variant="white">
+        <b-card title="New Ballot Block" class="mt-3" bg-variant="dark" text-variant="white">
           <b-card-text>
 
             <!-- Ballot Cards --> 
@@ -32,7 +32,7 @@
             <!--Create and Cancel Buttons-->
             <b-row class="mt-5">
               <b-col>
-                  <b-button variant="success" class="ml-2" @click="createNewPoll()"
+                  <b-button variant="success" class="ml-2" @click="vote()"
                     ><b>Vote</b></b-button>
               </b-col>
               <b-col>
@@ -54,6 +54,8 @@ import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 import votingBlock from "./voting-child.vue"
 import { BallotData } from "./BallotData";
 
+//import BallotParams from "@/components/BallotDesigner/bd-parent.vue"
+//import { BallotConfig } from "@/components/BallotDesigner/BallotConfig";
 
 @Component({ components: { "vote-child": votingBlock } }) //define the element that will be used in the html above
 export default class BlockParent extends Vue {
@@ -72,7 +74,8 @@ export default class BlockParent extends Vue {
           }
     ];
 
-    createNewCard(){
+
+    vote(){
         //something here
     }
 

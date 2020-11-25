@@ -18,7 +18,7 @@
                     <!-- Description -->
                     <b-row class="my-1">
                         <b-form-textarea 
-                        size="sm" v-model="cardData.description" 
+                        size="sm" v-model="cardData.proposal" 
                         placeholder="Enter a description of the proposal here."></b-form-textarea>
                     </b-row>
                     <hr style="background-color:white"/>

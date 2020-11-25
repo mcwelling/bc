@@ -1,1 +1,1 @@
-export type BallotConfig = {id: number; description: string; options: string[]};
+export type BallotConfig = {id: number; proposal: string; options: string[]; selected: string};

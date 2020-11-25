@@ -1,14 +1,33 @@
 {
-  "blocks": [
+  "proposals": [
     {
       "id": 1,
-      "proposal": "",
-      "options": ["red", "blue", "green"]
-    },
-    {
-      "id": 1,
-      "proposal": "",
-      "options": ["red", "blue", "green"]
+      "data": [
+        {
+          "id": 1,
+          "proposal": "",
+          "options": [],
+          "selected": ""
+        },
+        {
+          "id": 2,
+          "proposal": "",
+          "options": [],
+          "selected": ""
+        },
+        {
+          "id": 3,
+          "proposal": "",
+          "options": [],
+          "selected": ""
+        },
+        {
+          "id": 4,
+          "proposal": "",
+          "options": [],
+          "selected": ""
+        }
+      ]
     }
   ]
 }

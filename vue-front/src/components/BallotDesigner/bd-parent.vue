@@ -21,11 +21,11 @@
                 <b-col>
                     <hr style="background-color:grey"/>
                     <div class="row">
-                        <!-- This v-for handles the actual display of the data in the array, arrPollData -->
+                        <!-- This v-for handles the actual display of the data in the array, arrBallotConfigData -->
                         <!-- block is represents the value (type BallotConfig) in the array -->
                         <div
                         class="col-sm-6 mb-2"
-                        v-for="(block, index) in arrPollData" 
+                        v-for="(block, index) in arrBallotConfigData" 
                         :key="index"
                         >
                         <!-- :card-data="block" passes pollData from the above v-for into the poll-child
@@ -38,7 +38,7 @@
                         </div>
                         <!-- New Proposal Button -->
                         <div class="col-sm-6 mb-2 mt-5">
-                            <b-button variant="primary" class="ml-2" @click="createNewCard()"
+                            <b-button variant="primary" class="ml-2" @click="createNewProposal()"
                             ><b>New Proposal</b></b-button>
                         </div>
                     </div>
@@ -59,11 +59,11 @@
             <!--Create and Cancel Buttons-->
             <b-row class="mt-5">
               <b-col>
-                  <b-button variant="success" class="ml-2" @click="createNewPoll()"
+                  <b-button variant="success" class="ml-2" @click="createBallot()"
                     ><b>Create</b></b-button>
               </b-col>
               <b-col>
-                  <b-button variant="danger" class="ml-2" @click="reset()"
+                  <b-button variant="danger" class="ml-2" @click="deleteAll()"
                     ><b>Cancel</b></b-button>
               </b-col>  
             </b-row>
@@ -84,16 +84,12 @@ import { BallotConfig } from "./BallotConfig";
 
 @Component({ components: { "poll-child": configBlock } }) //define the element that will be used in the html above
 export default class BlockParent extends Vue {
-    private arrPollData: BallotConfig[] = [];
+    private arrBallotConfigData: BallotConfig[] = [];
 
-
-    onUpdateClass(n: BallotConfig){
-    //Mining code goes here
-    }
 
     onDeleteClass(c: BallotConfig) {
-    const x = this.arrPollData.indexOf(c) //this line would not scale well, but is suitable for prototyping
-    this.arrPollData.splice(x,1);
+    const x = this.arrBallotConfigData.indexOf(c) //this line would not scale well, but is suitable for prototyping
+    this.arrBallotConfigData.splice(x,1);
     }
 
     showHideCreate = true;
@@ -101,29 +97,58 @@ export default class BlockParent extends Vue {
     writeInToggle = false;
     showHideVote = false;
 
-    createNewPoll() {
-      //cleanup
-      this.showHideCreate= false;
-      this.showHideConfig = false;
-     // this.arrPollData = []; 
-      this.showHideVote = true;
+    //JSON
+    private defaultServerAddress = "http://localhost:3000";
 
+    createBallot() {
+      //cleanup UI
+     //this.showHideCreate= false;
+      //this.showHideConfig = false;
+      //this.showHideVote = true;
+      //this.deleteAll(1); // errors out
+      const test = {
+        id: 1,
+        data: this.arrBallotConfigData
+      }
+      const endpoint = this.defaultServerAddress + "/proposals" 
+      console.log("posting...")
+      this.$http
+      .post<BallotConfig[]>(endpoint, test)    
     }
 
-    createNewCard(){
+    
+    deleteAll(i: number){
+        //let deleteMe: BallotConfig[] = []
+        const endpoint = this.defaultServerAddress + "/proposals/" 
+        this.$http
+        .get<BallotConfig[]>(endpoint)
+        .then((response) => {
+          const result = response.data;
+          //deleteMe = result;
+          console.log(result);
+          //this.$http
+          //.delete(endpoint + deleteMe)
+        });
+    }
+
+    createNewProposal(){
         const empty: string[] = [];
         const newCard = {
-            id: this.arrPollData.length + 1,
-            description: "",
+            id: this.arrBallotConfigData.length + 1,
+            proposal: "",
             options: empty,
+            selected: "" 
+            /*selected isn't actually used in this module but it makes it easier for the voting module to use the data 
+            straight out of the json server. It may be more faithful to the idea of modularization to remove selected
+            and handle it on the voting end*/
         }  
-        this.arrPollData.push(newCard);
+        this.arrBallotConfigData.push(newCard);
     }
 
     reset() {
         this.showHideConfig = false;
         this.writeInToggle = false;
-        this.arrPollData = []; 
+        this.arrBallotConfigData = []; 
     }
 }
 </script>

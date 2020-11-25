@@ -43,12 +43,12 @@
 
 <script lang="ts">
 import { Component, Prop, Emit, Watch, Vue } from "vue-property-decorator";
-import { PollData } from "./PollData";
+import { BallotData } from "./BallotData";
 
 @Component
 export default class EventsChild extends Vue {
 
-    @Prop() private cardData!: PollData; //!: means can't be null
+    @Prop() private cardData!: BallotData; //!: means can't be null
     private cardDataChanged = false
 
     @Emit('delete')

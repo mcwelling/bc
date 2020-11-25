@@ -1,0 +1,1 @@
+export type BallotData = {id: number; description: string; options: string[]};

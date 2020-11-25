@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container>
-      <web-services-demo></web-services-demo>
+      <ballot-designer></ballot-designer>
     </b-container> 
   </div>
 </template>
@@ -9,10 +9,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import PollingParent from "@/components/Polling/polling-parent.vue"
+import PollingParent from "@/components/BallotDesigner/bd-parent.vue"
 
 @Component({
-  components: {"web-services-demo": PollingParent}
+  components: {"ballot-designer": PollingParent}
 })
 export default class BCView extends Vue {
 

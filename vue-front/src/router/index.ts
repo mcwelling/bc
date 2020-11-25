@@ -61,9 +61,9 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "state" */ '../views/BCView2.vue')
   },
   {
-    path: '/polling',
-    name: 'PollingSimulator',
-    component: () => import(/* webpackChunkName: "state" */ '../views/Polling.vue')
+    path: '/designer',
+    name: 'BallotDesigner',
+    component: () => import(/* webpackChunkName: "state" */ '../views/BallotDesigner.vue')
   },
   {
     path: '/voting',

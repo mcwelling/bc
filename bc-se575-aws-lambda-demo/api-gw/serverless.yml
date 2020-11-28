@@ -1,0 +1,60 @@
+# Setup the API Gateway
+service: bc-api-gw
+
+provider: 
+  name: aws
+  stage: dev 
+  region: 'us-east-1'
+
+resources:
+  Resources:
+    BCApiGW:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: BCApiGW
+        Description: 'API Gateway for Blockchain Demo Project'
+
+    ApiBaseResource:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        RestApiId:  !Ref BCApiGW
+        ParentId:  !GetAtt BCApiGW.RootResourceId
+        PathPart:  api
+
+    GoApiResource:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        RestApiId: !Ref BCApiGW
+        ParentId:  !Ref ApiBaseResource
+        PathPart:  go
+
+    PythonApiResource:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        RestApiId: !Ref BCApiGW
+        ParentId:  !Ref ApiBaseResource
+        PathPart:  python
+
+  Outputs:
+    apiGatewayRestApiId:
+      Value: 
+        Ref: BCApiGW
+      Export:
+        Name: BcApiGateway-restApiId
+
+    apiGatewayRestRootResourceId:
+      Value: !GetAtt BCApiGW.RootResourceId
+      Export:
+        Name: BcApiGateway-rootResourceId
+
+    GoApiId:
+      Value: 
+        Ref: GoApiResource
+      Export:
+        Name: BcApiGateway-GoApiId
+        
+    PythonApiId:
+      Value: 
+        Ref: PythonApiResource
+      Export:
+        Name: BcApiGateway-PythonApiId

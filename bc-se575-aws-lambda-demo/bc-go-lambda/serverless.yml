@@ -1,0 +1,30 @@
+# Proof of work blockchain solver serverless implementation
+
+service: bc-go-lambda
+plugins:
+  - serverless-offline
+provider:
+  name: aws
+  runtime: go1.x
+
+  apiGateway:
+    restApiId: !ImportValue BcApiGateway-restApiId
+    restApiRootResourceId: !ImportValue BcApiGateway-rootResourceId
+    restApiResources:
+      api/go: !ImportValue BcApiGateway-GoApiId
+
+
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+
+functions:
+  block-go-pow:
+    handler: bin/bc-go-lambda
+    events:
+      - http:
+          path: /api/go
+          method: get
+          cors: true

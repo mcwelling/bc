@@ -5,28 +5,11 @@
       "data": [
         {
           "id": 1,
-          "proposal": "dawdawad",
+          "proposal": "Test",
           "options": [
-            "awda",
-            "dawdawwd"
-          ],
-          "selected": ""
-        },
-        {
-          "id": 2,
-          "proposal": "dawdawd",
-          "options": [
-            "dawdwad",
-            "awddaw"
-          ],
-          "selected": ""
-        },
-        {
-          "id": 3,
-          "proposal": "dawdadwa",
-          "options": [
-            "dawdaw",
-            "dawdawdaw"
+            "1",
+            "2",
+            "3"
           ],
           "selected": ""
         }

@@ -47,7 +47,7 @@
                   <b-button
                     variant="danger"
                     size="sm"
-                    @click="deleteClass()"
+                    @click="deleteBlock()"
                     >Delete Block</b-button
                   >
                 </b-col>
@@ -85,7 +85,7 @@ export default class EventsChild extends Vue {
   }
 
   @Emit('delete-class-info')
-  deleteClass() {
+  deleteBlock() {
     return this.cardData
   }
 

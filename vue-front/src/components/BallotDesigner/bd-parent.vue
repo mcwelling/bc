@@ -7,7 +7,7 @@
           <b-card-text>
             <b-row class="my-1">
               <b-col>
-                  <b-button :variant="showHideConfig ? 'secondary' : 'success'" class="ml-2" @click="showHideConfig = !showHideConfig"
+                  <b-button :variant="showHideConfig ? 'secondary' : 'primary'" class="ml-2" @click="showHideConfig = !showHideConfig"
                     >Create New Ballot</b-button>
               </b-col>
             </b-row>
@@ -59,7 +59,7 @@
             <!--Create and Cancel Buttons-->
             <b-row class="mt-5">
               <b-col>
-                  <b-button variant="success" class="ml-2" @click="createBallot()"
+                  <b-button variant="primary" class="ml-2" @click="createBallot()"
                     ><b>Create</b></b-button>
               </b-col>
               <b-col>

@@ -3,7 +3,12 @@
     <div class="row">
       <b-container>
         <b-card bg-variant="dark" text-variant="white">
-          <b-button variant="success" class="ml-2" @click="getAll()"
+          <b-row class="my-3" align-h="center">
+            <b-col  cols="8" >
+              <b-form-input size="sm" v-model="uvid" placeholder="Please enter your Unique Voter ID" ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-button variant="primary" class="ml-2" @click="getAll()"
                     ><b>Get Ballot</b></b-button>
         </b-card>
         <!-- Ballots --> 
@@ -36,7 +41,7 @@
             <!--Vote and Clear Buttons-->
             <b-row class="mt-5">
               <b-col>
-                  <b-button variant="success" class="ml-2" @click="vote()"
+                  <b-button variant="primary" class="ml-2" @click="vote()"
                     ><b>Vote</b></b-button>
               </b-col>
               <b-col>
@@ -114,10 +119,27 @@ export default class VoteParent extends Vue {
           }*/
     ];
 
+    private uvid = ""; //unique voter ID
     private showBallot = false;
 
     //JSON
     private defaultServerAddress = "http://localhost:3000";
+
+    validateKey(){
+      //Validate the uvid key by making a get call to the backend
+      /*
+      const endpoint = this.defaultServerAddress + "/proposals";
+      this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
+      .then((response) => {
+        console.log("data:", result)
+        this.getAll();
+      })
+      .catch((err: AxiosError) => {
+          console.log("Failed")
+          //Show a not found message here
+        })
+      */
+    }
 
     getAll() {
       console.log("getall");
@@ -144,7 +166,8 @@ export default class VoteParent extends Vue {
           parenthash: this.arrBlockData[this.arrBlockData.length-1].blockhash, //"1111111111111111",
           data: voteData, //"New Block",
           nonce: 0,
-          blockhash:  "0000000000000000"
+          blockhash:  "0000000000000000",
+          valid: false
           }  
         
         this.arrBlockData.push(newBlock);
@@ -166,7 +189,8 @@ export default class VoteParent extends Vue {
       parenthash: "0000000000000000",
       data: "Root Block",
       nonce: 0,
-      blockhash: "1111111111111111"
+      blockhash: "1111111111111111",
+      valid: true
       }  
     ]
 

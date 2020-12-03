@@ -5,19 +5,11 @@
       "data": [
         {
           "id": 1,
-          "proposal": "bfdbvdzf",
+          "proposal": "Prop 1",
           "options": [
-            "gdr",
-            "drg"
-          ],
-          "selected": ""
-        },
-        {
-          "id": 2,
-          "proposal": "dfgdfg",
-          "options": [
-            "drgrdg",
-            "grdrg"
+            "1",
+            "2",
+            "3"
           ],
           "selected": ""
         }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-card bg-variant="secondary" text-variant="white">
+        <b-card :bg-variant="cardData.valid ? 'success' : 'danger'" text-variant="white">
             <b-row align-h="between">
                 <!-- Title -->
                 <b-col cols="auto"><strong>Block {{cardData.id}}</strong></b-col>
@@ -86,6 +86,7 @@ export default class EventsChild extends Vue {
     @Emit('mine')
     mine() {
         this.cardDataChanged = false
+        this.cardData.valid = true
         return this.cardData
     }
     
@@ -97,6 +98,7 @@ export default class EventsChild extends Vue {
     @Watch('cardData', {immediate: false, deep: true})
     onCardDataChanged(){
         this.cardDataChanged = true
+        this.cardData.valid = false
     }
 
 

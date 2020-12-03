@@ -104,6 +104,14 @@
             </b-form>
           </b-card-text>
         </b-card>
+        <b-card title="Unique Voter ID" class="mt-3" bg-variant="dark" text-variant="white" v-show="showHideID">
+          <b-card-text>
+            Your Unique Voter ID (UVID) is {{uvid}} 
+          </b-card-text>
+          <b-card-text>
+            Do not share your UVID with anyone. This ID is unique to you and will be needed to submit your vote.
+          </b-card-text>
+        </b-card>
       </b-container>
     </div>
   </div>
@@ -112,6 +120,7 @@
 
 <script lang="ts">
 //Note: Prop and Emit are not used and can be removed if not used before generating the production build
+import { AxiosError } from "axios";
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 //import configBlock from "./config-child.vue";
 import { RegData } from "./RegData";
@@ -130,16 +139,56 @@ export default class RegParent extends Vue {
         email: ""
     };
 
+    uvid = ""; //unique voter ID
     showHideReg = false;
+    showHideID = false;
     writeInToggle = false;
 
     //JSON
-    private defaultServerAddress = "http://localhost:3000";
+    //Note: I have to use a proxy to add cors headers to the request or else the request won't work
+    //there must be a better way. If the proxy is down, then our app won't work
+    private defaultServerAddress = "https://cors-anywhere.herokuapp.com/https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?";
+    //private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?"; //"http://localhost:3000";
+
 
     onSubmit(evt: any) {
         evt.preventDefault()
-        alert(JSON.stringify(this.VoterInfo))
+        //create request
+        const suffix =
+          "first=" + this.VoterInfo.first + "&" +
+          "last=" +  this.VoterInfo.last + "&" +
+          "street=" + this.VoterInfo.street + "&" +
+          "city=" + this.VoterInfo.city + "&" +
+          "state=" + this.VoterInfo.state + "&" +
+          "zip=" + this.VoterInfo.zip + "&" +
+          "dob=" + this.VoterInfo.dob + "&" +
+          "email=" + this.VoterInfo.email;
+        //alert(JSON.stringify(this.VoterInfo))
+        const endpoint = this.defaultServerAddress + suffix;
+        //alert(this.defaultServerAddress + suffix)
+
+        this.$http.get(endpoint)
+        .then((response) => {
+            console.log(response.data)
+            this.uvid = response.data;
+            this.showHideReg = false;
+            this.showHideID = true;
+        })
+        .catch((err: AxiosError) => {
+          console.log("Failed")
+
+        })
+        
+        /*this.$http.get(endpoint)
+        .then((response) => {
+            console.log(response)
+        })
+        .catch((err: AxiosError) => {
+          console.log("Failed")
+
+        })*/
       }
+
     onReset(evt: any) {
         evt.preventDefault()
         // Reset our form values

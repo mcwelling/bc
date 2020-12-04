@@ -156,9 +156,7 @@ export default class RegParent extends Vue {
     showHideID = false;
     writeInToggle = false;
 
-    //JSON
-    //Note: I have to use a proxy to add cors headers to the request or else the request won't work
-    //there must be a better way. If the proxy is down, then our app won't work
+    //Backend Server
     //private defaultServerAddress = "https://cors-anywhere.herokuapp.com/https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?";
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?"; //"http://localhost:3000";
     //private defaultServerAddress = "http://localhost:3000";

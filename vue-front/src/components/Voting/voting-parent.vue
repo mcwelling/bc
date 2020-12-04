@@ -2,6 +2,18 @@
   <div>
     <div class="row">
       <b-container>
+          <!-- Failed to find UVID -->
+         <b-card title="UVID Lookup Failed" class="mt-3" bg-variant="danger" text-variant="white" v-show="showUvidFail">
+          <b-card-text>
+            Unable to locate UVID {{uvid}}. <br/> Please check the entered UVID or register to vote.
+          </b-card-text>
+         </b-card>
+          <!-- UVID Found -->
+         <b-card title="UVID Lookup Success" class="mt-3" bg-variant="success" text-variant="white" v-show="showUvidSuccess">
+          <b-card-text>
+            Welcome {{voterName}}.
+          </b-card-text>
+         </b-card>
         <b-card bg-variant="dark" text-variant="white">
           <b-row class="my-3" align-h="center">
             <b-col  cols="8" >
@@ -102,28 +114,23 @@ import blocks from "./bc-child.vue"
 
 import { AxiosError } from "axios";
 
+//Response data types
+import { regResponse } from "./regResponse"
+
 @Component({ components: { "vote-child": votingBlock, "bc-child": blocks } }) //define the element that will be used in the html above
 export default class VoteParent extends Vue {
   /////////////////////////////VOTING////////////////////////////////////////////
     private arrBallotData: BallotData[] = [
-         /* {
-            id: 1,
-            proposal: "Favorite Color?",
-            options: ["red", "blue", "green"],
-            selected: "" //"red"
-          },
-          {
-            id: 2,
-            proposal: "Favorite Number",
-            options: ["1", "2", "3"],
-            selected: "" //"3"
-          }*/
+        //Array of proposals on the ballot
     ];
 
     private uvid = ""; //unique voter ID
     private showBallot = false;
+    private showUvidFail = false;
+    private showUvidSuccess = false;
+    private voterName = "";
 
-    //JSON
+    //Backend Server
     //private defaultServerAddress = "https://cors-anywhere.herokuapp.com/https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
     //private defaultServerAddress = "http://localhost:3000";
@@ -132,10 +139,21 @@ export default class VoteParent extends Vue {
       //Validate the uvid key by making a get call to the backend
       
       const endpoint = this.defaultServerAddress + "check-reg?voter_id=" + this.uvid;
-      this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
+      this.$http.get<regResponse>(endpoint)
       .then((response) => {
-        console.log("data:", response)
-        //this.getAll();
+        //console.log("data:", response.data.Item)
+        if(response.data.Item === undefined){
+          console.log("Null")
+          this.showUvidFail = true;
+          this.showUvidSuccess = false;
+        }
+        else{
+          console.log(response.data.Item)
+          this.voterName = response.data.Item.voter_fname + " " + response.data.Item.voter_lname
+          this.showUvidFail = false;
+          this.showUvidSuccess = true;
+          this.getAll();
+        }
       })
       .catch((err: AxiosError) => {
           console.log("Failed")
@@ -146,16 +164,16 @@ export default class VoteParent extends Vue {
     }
 
     getAll() {
-      console.log("getall");
+      //console.log("getall");
 
-      const endpoint = this.defaultServerAddress + "/proposals";
+      const endpoint = "http://localhost:3000/proposals"; //this.defaultServerAddress + "/proposals";
       this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
       .then((response) => {
         const result = response.data;
         //The data is packaged into a data structure to reduce the number of calls required
         //and give the ballot an easy to find id. see the ballot designer for details
         this.arrBallotData = result[0].data; 
-        console.log("data:", result)
+       //console.log("data:", result)
 
         this.showBallot = true;
       });

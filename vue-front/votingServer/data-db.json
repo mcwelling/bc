@@ -5,20 +5,19 @@
       "data": [
         {
           "id": 1,
-          "proposal": "dawdaw",
+          "proposal": "ggseg",
           "options": [
-            "1",
-            "2"
+            "esgg",
+            "egs"
           ],
           "selected": ""
         },
         {
           "id": 2,
-          "proposal": "awdwad",
+          "proposal": "egsesseg",
           "options": [
-            "1",
-            "2",
-            "3"
+            "segs",
+            "seges"
           ],
           "selected": ""
         }

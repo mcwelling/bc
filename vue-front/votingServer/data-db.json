@@ -5,7 +5,16 @@
       "data": [
         {
           "id": 1,
-          "proposal": "Prop 1",
+          "proposal": "dawdaw",
+          "options": [
+            "1",
+            "2"
+          ],
+          "selected": ""
+        },
+        {
+          "id": 2,
+          "proposal": "awdwad",
           "options": [
             "1",
             "2",

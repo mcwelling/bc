@@ -7,7 +7,7 @@
           <b-card-text>
             <b-row class="my-1">
               <b-col>
-                  <b-button :variant="showHideReg ? 'secondary' : 'success'" class="ml-2" @click="showHideReg = !showHideReg"
+                  <b-button :variant="showHideReg ? 'secondary' : 'primary'" class="ml-2" @click="showHideReg = !showHideReg"
                     >New Voter</b-button>
               </b-col>
             </b-row>
@@ -32,10 +32,22 @@
                   <!-- Last Name -->
                     <b-form-input
                               id="input-2"
-                              v-model="VoterInfo.Last"
+                              v-model="VoterInfo.last"
                               required
                               placeholder="Last Name"
                             ></b-form-input>
+                </b-col>
+                <b-col>
+                  <!-- dob -->
+                  <b-input-group prepend="Date of Birth:" class="mb-2 mr-sm-2 mb-sm-0">
+                    <b-form-input
+                              id="input-8"
+                              v-model="VoterInfo.dob"
+                              type="date"
+                              required
+                              placeholder="Date of Birth"
+                            ></b-form-input>
+                  </b-input-group>
                 </b-col>
               </b-row>
               <b-row class="my-2">
@@ -147,13 +159,15 @@ export default class RegParent extends Vue {
     //JSON
     //Note: I have to use a proxy to add cors headers to the request or else the request won't work
     //there must be a better way. If the proxy is down, then our app won't work
-    private defaultServerAddress = "https://cors-anywhere.herokuapp.com/https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?";
-    //private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?"; //"http://localhost:3000";
+    //private defaultServerAddress = "https://cors-anywhere.herokuapp.com/https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?";
+    private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?"; //"http://localhost:3000";
+    //private defaultServerAddress = "http://localhost:3000";
 
 
     onSubmit(evt: any) {
         evt.preventDefault()
         //create request
+        //Last and DOB need to be added
         const suffix =
           "first=" + this.VoterInfo.first + "&" +
           "last=" +  this.VoterInfo.last + "&" +
@@ -164,7 +178,7 @@ export default class RegParent extends Vue {
           "dob=" + this.VoterInfo.dob + "&" +
           "email=" + this.VoterInfo.email;
         //alert(JSON.stringify(this.VoterInfo))
-        const endpoint = this.defaultServerAddress + suffix;
+        const endpoint = this.defaultServerAddress + suffix + "/";
         //alert(this.defaultServerAddress + suffix)
 
         this.$http.get(endpoint)
@@ -178,7 +192,20 @@ export default class RegParent extends Vue {
           console.log("Failed")
 
         })
-        
+
+        /*
+        this.$http.get(endpoint)
+        .then((response) => {
+            console.log(response.data)
+            this.uvid = response.data;
+            this.showHideReg = false;
+            this.showHideID = true;
+        })
+        .catch((err: AxiosError) => {
+          console.log("Failed")
+
+        })
+
         /*this.$http.get(endpoint)
         .then((response) => {
             console.log(response)

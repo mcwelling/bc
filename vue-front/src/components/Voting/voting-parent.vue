@@ -8,7 +8,7 @@
               <b-form-input size="sm" v-model="uvid" placeholder="Please enter your Unique Voter ID" ></b-form-input>
             </b-col>
           </b-row>
-          <b-button variant="primary" class="ml-2" @click="getAll()"
+          <b-button variant="primary" class="ml-2" @click="validateKey()"
                     ><b>Get Ballot</b></b-button>
         </b-card>
         <!-- Ballots --> 
@@ -100,6 +100,7 @@ import { BallotData } from "./BallotData";
 import { BlockData } from "./BlockData";
 import blocks from "./bc-child.vue"
 
+import { AxiosError } from "axios";
 
 @Component({ components: { "vote-child": votingBlock, "bc-child": blocks } }) //define the element that will be used in the html above
 export default class VoteParent extends Vue {
@@ -123,22 +124,25 @@ export default class VoteParent extends Vue {
     private showBallot = false;
 
     //JSON
-    private defaultServerAddress = "http://localhost:3000";
+    //private defaultServerAddress = "https://cors-anywhere.herokuapp.com/https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
+    private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
+    //private defaultServerAddress = "http://localhost:3000";
 
     validateKey(){
       //Validate the uvid key by making a get call to the backend
-      /*
-      const endpoint = this.defaultServerAddress + "/proposals";
+      
+      const endpoint = this.defaultServerAddress + "check-reg?voter_id=" + this.uvid;
       this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
       .then((response) => {
-        console.log("data:", result)
-        this.getAll();
+        console.log("data:", response)
+        //this.getAll();
       })
       .catch((err: AxiosError) => {
           console.log("Failed")
+          console.log(err.response)
           //Show a not found message here
         })
-      */
+
     }
 
     getAll() {

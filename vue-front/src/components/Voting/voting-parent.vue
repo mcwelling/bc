@@ -14,6 +14,7 @@
             Welcome {{voterName}}.
           </b-card-text>
          </b-card>
+         <!-- Enter UVID and Get Ballot -->
         <b-card bg-variant="dark" text-variant="white">
           <b-row class="my-3" align-h="center">
             <b-col  cols="8" >
@@ -23,7 +24,7 @@
           <b-button variant="primary" class="ml-2" @click="validateKey()"
                     ><b>Get Ballot</b></b-button>
         </b-card>
-        <!-- Ballots --> 
+        <!-- Load in Ballot Data --> 
         <b-card title="New Ballot Block" class="mt-3" bg-variant="dark" text-variant="white" v-show="showBallot">
           <b-card-text>
 

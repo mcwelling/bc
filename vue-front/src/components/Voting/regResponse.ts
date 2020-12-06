@@ -9,6 +9,7 @@ export type regResponse = {
         voter_id: string,
         voter_lname: string,
         zip: string,
+        voted_yn: string,
     };
     ResponseMetadata: {
         //doesn't matter what is in here

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-card :bg-variant="cardData.valid ? 'success' : 'danger'" text-variant="white">
+        <b-card :bg-variant="valid ? 'success' : 'danger'" text-variant="white">
             <b-row align-h="between">
                 <!-- Title -->
                 <b-col cols="auto"><strong>Block {{cardData.id}}</strong></b-col>
@@ -67,19 +67,24 @@
 <script lang="ts">
 import { Component, Prop, Emit, Watch, Vue } from "vue-property-decorator";
 import { BlockData } from "./BlockData";
+import { updateMsg } from "./BlockData";
 
 @Component
 export default class EventsChild extends Vue {
 
     @Prop() private cardData!: BlockData; 
-    @Prop() private cardIndex!: number; 
-    private cardDataChanged = false
+    @Prop() private cardIndex!: number;
+    private valid = true; 
+    private cardDataChanged = false;
+    private mined = false;
 
-    @Emit('mine')
+    //@Emit('mine')
     mine() {
         this.cardDataChanged = false
-        this.cardData.valid = true
-        return this.cardData
+        //this.cardData.valid = true
+        this.cardData.blockhash = "mined";
+        this.mined = true;
+        //return this.cardData
     }
     
     @Emit('delete')
@@ -88,17 +93,29 @@ export default class EventsChild extends Vue {
     }
 
     @Emit('changed')
-    notifyParent(){
-        return this.cardIndex
+    notifyParent(): updateMsg{
+        return {index: this.cardIndex, blockhash: this.cardData.blockhash}
     }
 
     @Watch('cardData', {deep: true})
     onCardDataChanged(){
         this.cardDataChanged = true
-        this.cardData.valid = false
+        //this.valid = false
         this.cardData.blockhash = "Invalid"
         this.notifyParent()
     }
+
+    @Watch('cardDataChanged', {deep: true})
+    setValid(){
+        if(this.mined === true){
+            this.valid = true;
+            this.mined = false;
+            //this.cardData.blockhash = "test"
+        }
+        else{
+            this.valid = false;
+        }
+    }    
 
 
 }

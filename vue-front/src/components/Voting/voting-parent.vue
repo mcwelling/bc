@@ -2,16 +2,10 @@
   <div>
     <div class="row">
       <b-container>
-          <!-- Failed to find UVID -->
-         <b-card title="UVID Lookup Failed" class="mt-3" bg-variant="danger" text-variant="white" v-show="showUvidFail">
+          <!-- Response Banner -->
+         <b-card :title="statusSuccess ? 'Success' : 'Error'" class="mt-3" :bg-variant="statusSuccess ? 'success' : 'danger'" text-variant="white" v-show="showStatusBanner">
           <b-card-text>
-            Unable to locate UVID {{uvid}}. <br/> Please check the entered UVID or register to vote.
-          </b-card-text>
-         </b-card>
-          <!-- UVID Found -->
-         <b-card title="UVID Lookup Success" class="mt-3" bg-variant="success" text-variant="white" v-show="showUvidSuccess">
-          <b-card-text>
-            Welcome {{voterName}}.
+            {{statusMsg}}
           </b-card-text>
          </b-card>
          <!-- Enter UVID and Get Ballot -->
@@ -96,8 +90,10 @@ export default class VoteParent extends Vue {
 
     private uvid = ""; //unique voter ID
     private showBallot = false;
-    private showUvidFail = false;
-    private showUvidSuccess = false;
+    private showStatusBanner = false;
+    private statusSuccess = false;
+    private statusMsg = "";
+
     private voterName = "";
     private showSpinner1 = false;
     private showSpinner2 = false;
@@ -106,31 +102,48 @@ export default class VoteParent extends Vue {
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
 
     validateKey(){
-      //Validate the uvid key by making a get call to the backend
-      this.showSpinner1 = true;
       
+      this.showSpinner1 = true;
+
+      //Validate the uvid key by making a get call to the backend
       const endpoint = this.defaultServerAddress + "check-reg?voter_id=" + this.uvid;
       this.$http.get<regResponse>(endpoint)
       .then((response) => {
-        //console.log("data:", response.data.Item)
+        //No user registered
         if(response.data.Item === undefined){
           console.log("Null")
-          this.showUvidFail = true;
-          this.showUvidSuccess = false;
-          this.showSpinner1 = false
+          this.statusMsg = "A user with the UVID " + this.uvid + "has not been registered."
+          this.statusSuccess = false;
+          this.showStatusBanner = true;
+
+          this.showSpinner1 = false;
         }
+        //user found
         else{
           console.log(response.data.Item)
           this.voterName = response.data.Item.voter_fname + " " + response.data.Item.voter_lname
-          this.showUvidFail = false;
-          this.showUvidSuccess = true;
-          this.getAll();
+          this.statusMsg = "Welcome " + this.voterName + ".";
+          this.statusSuccess = true;
+          this.showStatusBanner = true;
+
+          console.log("voted", response.data.Item.voted_yn)
+          //check if the user voted yet
+          if(response.data.Item.voted_yn === "N"){
+              this.getAll();
+          }
+          else{
+            this.statusMsg = this.statusMsg + " Our records show that you have already voted!"
+            this.showSpinner1 = false;
+          }
+          
         }
       })
       .catch((err: AxiosError) => {
           this.showSpinner1 = false;
-          console.log("Failed")
-          console.log(err.response)
+          console.log(err.response);
+          this.statusMsg = "Please enter a valid UVID.";
+          this.statusSuccess = false;
+          this.showStatusBanner = true;
           //Show a not found message here
         })
 
@@ -153,27 +166,32 @@ export default class VoteParent extends Vue {
           console.log(err.response)
           //Show a not found message here
         });
-  }
-
+      }
+      
+    //FIXME: Make this prettier 
     vote(){
         this.showSpinner2 = true;
-        const voteData = encodeURI(JSON.stringify(this.arrBallotData))
+        const voteData = encodeURI(JSON.stringify(this.arrBallotData)) 
+        const suffix = "queue-vote?voter_id=" + this.uvid + "&payload=" + voteData;
+        console.log(suffix);
+        const endpoint = this.defaultServerAddress + suffix;
         //const voteData = JSON.stringify(this.arrBallotData)
-        //create block 
-        /*
-        const newBlock = {
-          //id: this.arrBlocks[this.arrBlocks.length-1].,
-          id: this.arrBlockData.length,
-          parenthash: this.arrBlockData[this.arrBlockData.length-1].blockhash, //"1111111111111111",
-          data: voteData, //"New Block",
-          nonce: 0,
-          blockhash:  "0000000000000000",
-          valid: false
-          }  
-        
-        this.arrBlockData.push(newBlock);
-        //send data to miner here
-        */
+        this.$http.get<any>(endpoint)
+        .then((response) =>{
+          console.log(response)
+          this.showBallot = false;
+          this.statusMsg = "Vote submitted.";
+          this.statusSuccess = true;
+        })
+        .catch((err: AxiosError) => {
+          console.log(err);
+          this.statusMsg = "Networking Error.";
+          this.statusSuccess = false;
+        })
+        .finally(() => {
+          this.showStatusBanner = true;
+          this.showSpinner2 = false;
+        })
     }
 
     reset() {

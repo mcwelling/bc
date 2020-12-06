@@ -62,10 +62,10 @@ export default class VoteParent extends Vue {
     private arrBlockData: BlockData[] = [
       {
       id: 0,
-      parenthash: "0000000000000000",
+      parenthash: "0000000000000000000000000000000000000000000000000000000000000000",
       data: "Root Block",
       nonce: 0,
-      blockhash: "1111111111111111",
+      blockhash: "11111111111111111111111111111111111111111111111111111111111111111",
       valid: true
       }  
     ]

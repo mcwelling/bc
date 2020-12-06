@@ -107,7 +107,9 @@
             <!--Register and Cancel Buttons-->
             <b-row class="mt-5">
                 <b-col>
-                   <b-button type="submit" variant="primary">Submit</b-button>
+                   <b-button type="submit" variant="primary">
+                     <b-spinner small v-show="showSpinner"></b-spinner>
+                      Submit</b-button>
                 </b-col>
                 <b-col>
                    <b-button type="reset" variant="danger">Reset</b-button>
@@ -134,7 +136,6 @@
 //Note: Prop and Emit are not used and can be removed if not used before generating the production build
 import { AxiosError } from "axios";
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
-//import configBlock from "./config-child.vue";
 import { RegData } from "./RegData";
 
 
@@ -155,17 +156,19 @@ export default class RegParent extends Vue {
     showHideReg = false;
     showHideID = false;
     writeInToggle = false;
+    showSpinner = false;
 
     //Backend Server
-    //private defaultServerAddress = "https://cors-anywhere.herokuapp.com/https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?";
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?"; //"http://localhost:3000";
-    //private defaultServerAddress = "http://localhost:3000";
+
 
 
     onSubmit(evt: any) {
         evt.preventDefault()
+
+        this.showSpinner = true;
+        
         //create request
-        //Last and DOB need to be added
         const suffix =
           "first=" + this.VoterInfo.first + "&" +
           "last=" +  this.VoterInfo.last + "&" +
@@ -175,9 +178,9 @@ export default class RegParent extends Vue {
           "zip=" + this.VoterInfo.zip + "&" +
           "dob=" + this.VoterInfo.dob + "&" +
           "email=" + this.VoterInfo.email;
-        //alert(JSON.stringify(this.VoterInfo))
+
         const endpoint = this.defaultServerAddress + suffix + "/";
-        //alert(this.defaultServerAddress + suffix)
+
 
         this.$http.get(endpoint)
         .then((response) => {
@@ -185,33 +188,13 @@ export default class RegParent extends Vue {
             this.uvid = response.data;
             this.showHideReg = false;
             this.showHideID = true;
+            this.showSpinner = false;
         })
         .catch((err: AxiosError) => {
           console.log("Failed")
-
+          this.showSpinner = false;
         })
 
-        /*
-        this.$http.get(endpoint)
-        .then((response) => {
-            console.log(response.data)
-            this.uvid = response.data;
-            this.showHideReg = false;
-            this.showHideID = true;
-        })
-        .catch((err: AxiosError) => {
-          console.log("Failed")
-
-        })
-
-        /*this.$http.get(endpoint)
-        .then((response) => {
-            console.log(response)
-        })
-        .catch((err: AxiosError) => {
-          console.log("Failed")
-
-        })*/
       }
 
     onReset(evt: any) {
@@ -233,54 +216,6 @@ export default class RegParent extends Vue {
         })
     }
 
-    /*
-    onDeleteClass(c: BallotConfig) {
-    const x = this.arrBallotConfigData.indexOf(c) //this line would not scale well, but is suitable for prototyping
-    this.arrBallotConfigData.splice(x,1);
-    }
-
-    createBallot() {
-      //cleanup UI
-      this.showHideConfig = false;
-
-      const endpoint = this.defaultServerAddress + "/proposals/"
-      //need to package the config in a data structure so that delete will always know the id of the json entry
-      const ballot = { 
-        id: 1,
-        data: this.arrBallotConfigData
-      }
-
-      console.log("deleting...")
-      //this.deleteAll(); // delete the last config
-      this.$http
-      .delete(endpoint + "1") 
-      .finally(() => { //Placing the post inside finally is important. otherwise the post could overlap with delete
-          console.log("posting...")
-          this.$http
-          .post<BallotConfig[]>(endpoint, ballot) 
-      }) 
-    }
-
-
-    createNewProposal(){
-        const empty: string[] = [];
-        const newCard = {
-            id: this.arrBallotConfigData.length + 1,
-            proposal: "",
-            options: empty,
-            selected: "" 
-            /*selected isn't actually used in this module but it makes it easier for the voting module to use the data 
-            straight out of the json server. It may be more faithful to the idea of modularization to remove selected
-            and handle it on the voting end*/
-    /*    }  
-        this.arrBallotConfigData.push(newCard);
-    }
-
-    reset() {
-        this.showHideConfig = false;
-        this.writeInToggle = false;
-        this.arrBallotConfigData = []; 
-    }*/
 }
 </script>
 

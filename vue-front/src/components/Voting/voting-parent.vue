@@ -21,8 +21,9 @@
               <b-form-input size="sm" v-model="uvid" placeholder="Please enter your Unique Voter ID" ></b-form-input>
             </b-col>
           </b-row>
-          <b-button variant="primary" class="ml-2" @click="validateKey()"
-                    ><b>Get Ballot</b></b-button>
+          <b-button variant="primary" class="ml-2" @click="validateKey()">
+            <b-spinner small v-show="showSpinner1"></b-spinner>
+            <b> Get Ballot</b></b-button>
         </b-card>
         <!-- Load in Ballot Data --> 
         <b-card title="New Ballot Block" class="mt-3" bg-variant="dark" text-variant="white" v-show="showBallot">
@@ -54,8 +55,9 @@
             <!--Vote and Clear Buttons-->
             <b-row class="mt-5">
               <b-col>
-                  <b-button variant="primary" class="ml-2" @click="vote()"
-                    ><b>Vote</b></b-button>
+                  <b-button variant="primary" class="ml-2" @click="vote()">
+                    <b-spinner small v-show="showSpinner2"></b-spinner>
+                    <b> Vote</b></b-button>
               </b-col>
               <b-col>
                   <b-button variant="danger" class="ml-2" @click="reset()"
@@ -97,12 +99,15 @@ export default class VoteParent extends Vue {
     private showUvidFail = false;
     private showUvidSuccess = false;
     private voterName = "";
+    private showSpinner1 = false;
+    private showSpinner2 = false;
 
     //Backend Server
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
 
     validateKey(){
       //Validate the uvid key by making a get call to the backend
+      this.showSpinner1 = true;
       
       const endpoint = this.defaultServerAddress + "check-reg?voter_id=" + this.uvid;
       this.$http.get<regResponse>(endpoint)
@@ -112,6 +117,7 @@ export default class VoteParent extends Vue {
           console.log("Null")
           this.showUvidFail = true;
           this.showUvidSuccess = false;
+          this.showSpinner1 = false
         }
         else{
           console.log(response.data.Item)
@@ -122,6 +128,7 @@ export default class VoteParent extends Vue {
         }
       })
       .catch((err: AxiosError) => {
+          this.showSpinner1 = false;
           console.log("Failed")
           console.log(err.response)
           //Show a not found message here
@@ -138,10 +145,18 @@ export default class VoteParent extends Vue {
         console.log(JSON.parse(response.data.Item.info.data))
         this.arrBallotData = JSON.parse(response.data.Item.info.data)
         this.showBallot = true;
-      });
+        this.showSpinner1 = false;
+      })
+      .catch((err: AxiosError) => {
+          this.showSpinner1 = false;
+          console.log("Failed")
+          console.log(err.response)
+          //Show a not found message here
+        });
   }
 
     vote(){
+        this.showSpinner2 = true;
         const voteData = encodeURI(JSON.stringify(this.arrBallotData))
         //const voteData = JSON.stringify(this.arrBallotData)
         //create block 

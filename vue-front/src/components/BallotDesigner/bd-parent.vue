@@ -2,6 +2,18 @@
   <div>
     <div class="row">
       <b-container>
+         <!-- Failed to create ballot-->
+         <b-card title="Error" class="mt-3" bg-variant="danger" text-variant="white" v-show="showFail">
+          <b-card-text>
+            Unable to create ballot. <br/> Please ensure that you are connected to the internet.
+          </b-card-text>
+         </b-card>
+          <!-- UVID Found -->
+         <b-card title="Success" class="mt-3" bg-variant="success" text-variant="white" v-show="showSuccess">
+          <b-card-text>
+            Ballot successfully created.
+          </b-card-text>
+         </b-card>
         <!-- Create Poll Card --> 
         <b-card title="Create a Ballot" class="col-12" bg-variant="dark" text-variant="white">
           <b-card-text>
@@ -44,7 +56,7 @@
                     </div>
                 </b-col>
             </b-row>
-            <!-- write-in toggle --> 
+            <!-- write-in toggle 
             <b-row class="mt-5">
               <b-col>
                     <b-form-checkbox v-model="writeInToggle" name="check-button" switch >
@@ -52,15 +64,15 @@
                     </b-form-checkbox>
               </b-col>
               <b-col>
-                  <!-- might look better if the color changed? -->
                   <b>{{ writeInToggle ? "yes" : "no" }}</b>
               </b-col>  
-            </b-row>
+            </b-row>--> 
             <!--Create and Cancel Buttons-->
             <b-row class="mt-5">
               <b-col>
-                  <b-button variant="primary" class="ml-2" @click="createBallot()"
-                    ><b>Create</b></b-button>
+                  <b-button variant="primary" class="ml-2" @click="createBallot()">
+                    <b-spinner small v-show="showSpinner"></b-spinner>
+                    <b> Create</b></b-button>
               </b-col>
               <b-col>
                   <b-button variant="danger" class="ml-2" @click="deleteAll()"
@@ -89,7 +101,10 @@ export default class BlockParent extends Vue {
 
     showHideConfig = false;
     writeInToggle = false;
-
+    showSpinner = false;
+    showFail = false;
+    showSuccess = false;
+    
     //JSON
     //private defaultServerAddress = "http://localhost:3000/proposals/";
       private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/"
@@ -99,9 +114,14 @@ export default class BlockParent extends Vue {
     this.arrBallotConfigData.splice(x,1);
     }
 
+    deleteAll() {
+    this.arrBallotConfigData = [];
+    this.showHideConfig = false; 
+    }
+
     createBallot() {
-      //cleanup UI
-      this.showHideConfig = false;
+      //update UI
+      this.showSpinner = true;
       const deleteEndpoint = this.defaultServerAddress + "delete-ballot"
       const sendEndpoint = this.defaultServerAddress + "set-ballot?data=" + encodeURI(JSON.stringify(this.arrBallotConfigData)) //this.arrBallotConfigData
       /*
@@ -122,9 +142,19 @@ export default class BlockParent extends Vue {
           this.$http.get(sendEndpoint)
           .then((response) => {
             console.log(response)
+            //UI updates
+            this.showSpinner = false;
+            this.showHideConfig = false;
+            this.showFail = false;
+            this.showSuccess = true;
           })
           .catch((err: AxiosError)=> {
             console.log(err)
+            //UI updates
+            this.showHideConfig = false;
+            this.showSpinner = false;
+            this.showFail = true;
+            this.showSuccess = false;
           })
       }) 
     }

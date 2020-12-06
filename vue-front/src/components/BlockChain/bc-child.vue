@@ -47,22 +47,13 @@
                     <b-container>
                         <hr style="background-color:white"/>
                         <b-row>
-                            <b-col>
-                            <b-button
-                                variant="danger"
-                                size="sm"
-                                @click="deleteClass()"
-                                >Delete Block</b-button
-                            >
-                            </b-col>
                             <b-col >
                             <b-button
                                 :disabled="!cardDataChanged"
                                 variant="primary"
                                 size="sm"
                                 @click="mine()"
-                                >Mine</b-button
-                            >
+                                >Mine</b-button>
                             </b-col>
                         </b-row>
                     </b-container>  
@@ -80,7 +71,8 @@ import { BlockData } from "./BlockData";
 @Component
 export default class EventsChild extends Vue {
 
-    @Prop() private cardData!: BlockData; //!: means can't be null
+    @Prop() private cardData!: BlockData; 
+    @Prop() private cardIndex!: number; 
     private cardDataChanged = false
 
     @Emit('mine')
@@ -95,10 +87,17 @@ export default class EventsChild extends Vue {
         return this.cardData
     }
 
-    @Watch('cardData', {immediate: false, deep: true})
+    @Emit('changed')
+    notifyParent(){
+        return this.cardIndex
+    }
+
+    @Watch('cardData', {deep: true})
     onCardDataChanged(){
         this.cardDataChanged = true
         this.cardData.valid = false
+        this.cardData.blockhash = "Invalid"
+        this.notifyParent()
     }
 
 

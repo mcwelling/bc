@@ -15,16 +15,16 @@
             <!-- block is defined here as an element in the array -->
             <div
               class="col-sm-6 mb-2"
-              v-for="(block2, index2) in arrBlockData" 
-              :key="index2"
-            >
+              v-for="(block, index) in arrBlockData" 
+              :key="index">
             <!-- Pass in cards to display and give each child an event called update-class-info
             call "onUpdateClass" if this event occurs-->
             <!-- note: the custom element "bc-child" directly corresponds with the element defined in the ts script-->
               <bc-child
-                :card-data="block2"
+                :card-data="block"
+                :card-index="index"
                 @mine="mineBlock"
-                @delete="deleteBlock"
+                @changed="updateBlocks"
               ></bc-child> 
             </div>
           </div>
@@ -67,7 +67,31 @@ export default class VoteParent extends Vue {
       nonce: 0,
       blockhash: "11111111111111111111111111111111111111111111111111111111111111111",
       valid: true
-      }  
+      },  
+      {
+      id: 1,
+      parenthash: "wating",
+      data: "b1",
+      nonce: 0,
+      blockhash: "waiting",
+      valid: true
+      },
+      {
+      id: 2,
+      parenthash: "waiting",
+      data: "b2",
+      nonce: 0,
+      blockhash: "waiting",
+      valid: true
+      },
+      {
+      id: 3,
+      parenthash: "waiting",
+      data: "b3",
+      nonce: 0,
+      blockhash: "waiting",
+      valid: true
+      }
     ]
 
     getBlocks(){
@@ -78,8 +102,11 @@ export default class VoteParent extends Vue {
         //create block and send data to miner here
     }
 
-    deleteBlock(){
-        //create block and send data to miner here
+    updateBlocks(i: number){
+        const bcLen = this.arrBlockData.length;
+        if((bcLen > 0) && (i < bcLen-1)){
+          this.arrBlockData[i+1].parenthash = "Invalid"
+        }
     }
 
 

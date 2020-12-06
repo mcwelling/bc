@@ -80,33 +80,37 @@ export default class VoteParent extends Vue {
     private arrBlockData: BlockData[] = [
       {
       id: 0,
+      blockid: "ef59ccef9c4e259478446a5458f315e1da2afa028e1e6ebfe9b46c33f42c232a",
       parenthash: "0000000000000000000000000000000000000000000000000000000000000000",
       data: "Root Block",
-      nonce: 0,
+      nonce: "0",
       blockhash: "11111111111111111111111111111111111111111111111111111111111111111",
       valid: true
       },  
       {
       id: 1,
+      blockid: "ef59ccef9c4e259478446a5458f315e1da2afa028e1e6ebfe9b46c33f42c232b",
       parenthash: "wating",
       data: "b1",
-      nonce: 0,
+      nonce: "0",
       blockhash: "waiting",
       valid: true
       },
       {
       id: 2,
+      blockid: "ef59ccef9c4e259478446a5458f315e1da2afa028e1e6ebfe9b46c33f42c232c",
       parenthash: "waiting",
       data: "b2",
-      nonce: 0,
+      nonce: "0",
       blockhash: "waiting",
       valid: true
       },
       {
       id: 3,
+      blockid: "ef59ccef9c4e259478446a5458f315e1da2afa028e1e6ebfe9b46c33f42c232d",
       parenthash: "waiting",
       data: "b3",
-      nonce: 0,
+      nonce: "0",
       blockhash: "waiting",
       valid: true
       }

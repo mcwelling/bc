@@ -1,46 +1,77 @@
 <template>
     <div>
         <b-card :bg-variant="valid ? 'success' : 'danger'" text-variant="white">
-            <b-row align-h="between">
+            <b-row class="mb-3" align-h="between">
                 <!-- Title -->
                 <b-col cols="auto"><strong>Block {{cardData.id}}</strong></b-col>
             </b-row>
             <b-card-text>
                 <b-container>
+                    <!-- Block ID -->
+                    <b-row class="my-1">
+                        <b-col sm="3" class="text-left">
+                        <label>Block ID:</label>
+                        </b-col>
+                        <b-col sm="9">
+                        <b-form-textarea 
+                        size="sm" 
+                        rows="2" 
+                        max-rows="3" 
+                        v-model="cardData.blockid" 
+                        readonly></b-form-textarea>
+                        </b-col>
+                    </b-row>
                     <!-- ParentHash -->
                     <b-row class="my-1">
-                        <b-col sm="3" class="offset-sm-2 text-left">
+                        <b-col sm="3" class="text-left">
                         <label>Parent Hash:</label>
                         </b-col>
-                        <b-col sm="6">
-                        <b-form-input size="sm" v-model="cardData.parenthash" readonly></b-form-input>
+                        <b-col sm="9">
+                        <b-form-textarea 
+                        size="sm" 
+                        rows="2" 
+                        max-rows="3" 
+                        v-model="cardData.parenthash" 
+                        readonly></b-form-textarea>
                         </b-col>
                     </b-row>
                     <!-- Data -->
                     <b-row class="my-1">
-                        <b-col sm="3" class="offset-sm-2 text-left">
+                        <b-col sm="3" class="text-left">
                         <label>Data:</label>
                         </b-col>
-                        <b-col sm="6">
-                        <b-form-textarea size="sm" v-model="cardData.data"></b-form-textarea>
+                        <b-col sm="9">
+                        <b-form-textarea  
+                        size="sm" 
+                        rows="2" 
+                        max-rows="5" 
+                        v-model="cardData.data"></b-form-textarea>
                         </b-col>
                     </b-row>
                     <!-- Nonce -->
                     <b-row class="my-1">
-                        <b-col sm="3" class="offset-sm-2 text-left">
+                        <b-col sm="3" class="text-left">
                         <label>Nonce:</label>
                         </b-col>
-                        <b-col sm="6">
-                        <b-form-input size="sm" v-model="cardData.nonce" readonly></b-form-input>
+                        <b-col sm="9">
+                        <b-form-input 
+                        size="sm" 
+                        v-model="cardData.nonce"
+                        readonly></b-form-input>
                         </b-col>
                     </b-row>
                     <!-- BlockHash -->
                     <b-row class="my-1">
-                        <b-col sm="3" class="offset-sm-2 text-left">
+                        <b-col sm="3" class="text-left">
                         <label>Block Hash:</label>
                         </b-col>
-                        <b-col sm="6">
-                        <b-form-input size="sm" v-model="cardData.blockhash" readonly></b-form-input>
+                        <b-col sm="9">
+                        <b-form-textarea  
+                        size="sm" 
+                        rows="2" 
+                        max-rows="3" 
+                        v-model="cardData.blockhash" 
+                        readonly></b-form-textarea>
                         </b-col>
                     </b-row>
                     <!-- Mine and Delete Buttons -->
@@ -81,7 +112,7 @@ export default class EventsChild extends Vue {
     //@Emit('mine')
     mine() {
         this.cardDataChanged = false
-        //this.cardData.valid = true
+        this.valid = true
         this.cardData.blockhash = "mined";
         this.mined = true;
         //return this.cardData
@@ -99,25 +130,18 @@ export default class EventsChild extends Vue {
 
     @Watch('cardData', {deep: true})
     onCardDataChanged(){
-        this.cardDataChanged = true
-        //this.valid = false
-        this.cardData.blockhash = "Invalid"
-        this.notifyParent()
-    }
-
-    @Watch('cardDataChanged', {deep: true})
-    setValid(){
+        
         if(this.mined === true){
-            this.valid = true;
             this.mined = false;
-            //this.cardData.blockhash = "test"
+            this.cardDataChanged = false;
         }
         else{
+            this.cardDataChanged = true;
             this.valid = false;
+            this.cardData.blockhash = "Invalid"
         }
-    }    
-
-
+        this.notifyParent()
+    }
 }
 </script>
 

@@ -49,7 +49,7 @@
             <!--Vote and Clear Buttons-->
             <b-row class="mt-5">
               <b-col>
-                  <b-button variant="primary" class="ml-2" @click="vote()">
+                  <b-button variant="primary" class="ml-2" :disabled="!canVote" @click="setVoteProcessing()">
                     <b-spinner small v-show="showSpinner2"></b-spinner>
                     <b> Vote</b></b-button>
               </b-col>
@@ -93,7 +93,7 @@ export default class VoteParent extends Vue {
     private showStatusBanner = false;
     private statusSuccess = false;
     private statusMsg = "";
-
+    private canVote = true;
     private voterName = "";
     private showSpinner1 = false;
     private showSpinner2 = false;
@@ -149,6 +149,21 @@ export default class VoteParent extends Vue {
 
     }
 
+    //
+    setVoteProcessing(){
+      this.showSpinner2 = true;
+      const endpoint = this.defaultServerAddress + "set-reg-status?voter_id=" + this.uvid;
+      this.$http.get(endpoint)
+      .then((response) => {
+          this.canVote = true;
+          this.vote();
+      })
+      .catch((err: AxiosError) => {
+        console.log(err)
+      })
+    }
+
+
     getAll() {
       //console.log("getall");
 
@@ -170,10 +185,9 @@ export default class VoteParent extends Vue {
       
     //FIXME: Make this prettier 
     vote(){
-        this.showSpinner2 = true;
         const voteData = encodeURI(JSON.stringify(this.arrBallotData)) 
         const suffix = "queue-vote?voter_id=" + this.uvid + "&payload=" + voteData;
-        console.log(suffix);
+        //console.log(suffix);
         const endpoint = this.defaultServerAddress + suffix;
         //const voteData = JSON.stringify(this.arrBallotData)
         this.$http.get<any>(endpoint)
@@ -187,6 +201,7 @@ export default class VoteParent extends Vue {
           console.log(err);
           this.statusMsg = "Networking Error.";
           this.statusSuccess = false;
+          this.canVote = true;
         })
         .finally(() => {
           this.showStatusBanner = true;

@@ -1,8 +1,9 @@
 export type BlockData = {
     id: number;
+    blockid: string;
     parenthash: string;
     data: string;
-    nonce: number;
+    nonce: string;
     blockhash: string;
     valid: boolean};
 

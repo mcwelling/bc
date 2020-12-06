@@ -7,7 +7,7 @@
           <b-card-text>
             <b-row class="my-1">
               <b-col>
-                  <b-button :variant="showHideReg ? 'secondary' : 'primary'" class="ml-2" @click="showHideReg = !showHideReg"
+                  <b-button :variant="showHideReg ? 'secondary' : 'primary'" class="ml-2" @click="onNewVoter"
                     >New Voter</b-button>
               </b-col>
             </b-row>
@@ -162,6 +162,10 @@ export default class RegParent extends Vue {
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/registration?"; //"http://localhost:3000";
 
 
+    onNewVoter(){
+      this.showHideReg = !this.showHideReg;
+      this.showHideID = false;
+    }
 
     onSubmit(evt: any) {
         evt.preventDefault()

@@ -80,6 +80,7 @@
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 import configBlock from "./config-child.vue";
 import { BallotConfig } from "./BallotConfig";
+import { AxiosError } from "axios";
 
 
 @Component({ components: { "poll-child": configBlock } }) //define the element that will be used in the html above
@@ -90,8 +91,8 @@ export default class BlockParent extends Vue {
     writeInToggle = false;
 
     //JSON
-    private defaultServerAddress = "http://localhost:3000";
-
+    //private defaultServerAddress = "http://localhost:3000/proposals/";
+      private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/"
 
     onDeleteClass(c: BallotConfig) {
     const x = this.arrBallotConfigData.indexOf(c) //this line would not scale well, but is suitable for prototyping
@@ -101,22 +102,30 @@ export default class BlockParent extends Vue {
     createBallot() {
       //cleanup UI
       this.showHideConfig = false;
-
-      const endpoint = this.defaultServerAddress + "/proposals/"
-      //need to package the config in a data structure so that delete will always know the id of the json entry
-      const ballot = { 
-        id: 1,
-        data: this.arrBallotConfigData
-      }
-
+      const deleteEndpoint = this.defaultServerAddress + "delete-ballot"
+      const sendEndpoint = this.defaultServerAddress + "set-ballot?data=" + encodeURI(JSON.stringify(this.arrBallotConfigData)) //this.arrBallotConfigData
+      /*
+      this.$http.get(endpoint)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((err: AxiosError)=> {
+        console.log(err)
+      })
+     */
       console.log("deleting...")
       //this.deleteAll(); // delete the last config
       this.$http
-      .delete(endpoint + "1") 
+      .get(deleteEndpoint) 
       .finally(() => { //Placing the post inside finally is important. otherwise the post could overlap with delete
-          console.log("posting...")
-          this.$http
-          .post<BallotConfig[]>(endpoint, ballot) 
+          console.log("Sending Ballot...")
+          this.$http.get(sendEndpoint)
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((err: AxiosError)=> {
+            console.log(err)
+          })
       }) 
     }
 

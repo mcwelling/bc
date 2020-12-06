@@ -64,35 +64,6 @@
             </b-row>
           </b-card-text>
         </b-card>
-        <!-- Block Data -->
-        
-        <b-card class="mt-3" bg-variant="dark" text-variant="white">
-          <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button block v-b-toggle.accordion-1 variant="dark"><strong>Blocks</strong></b-button>
-          </b-card-header>
-        <b-collapse id="accordion-1"  accordion="my-accordion" role="tabpanel">
-          <hr style="background-color:grey"/>
-          <!-- Block Chain -->
-          <div class="row">
-            <!--This loop handles the actual display of the updated array "arrBlockData: BlockData[] = []"-->
-            <!-- block is defined here as an element in the array -->
-            <div
-              class="col-sm-6 mb-2"
-              v-for="(block2, index2) in arrBlockData" 
-              :key="index2"
-            >
-            <!-- Pass in cards to display and give each child an event called update-class-info
-            call "onUpdateClass" if this event occurs-->
-            <!-- note: the custom element "bc-child" directly corresponds with the element defined in the ts script-->
-              <bc-child
-                :card-data="block2"
-                @mine="mineBlock"
-                @delete="deleteBlock"
-              ></bc-child> 
-            </div>
-          </div>
-            </b-collapse>
-        </b-card>
        
       </b-container>
     </div>
@@ -109,16 +80,12 @@
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 import votingBlock from "./voting-child.vue";
 import { BallotData } from "./BallotData";
-
-import { BlockData } from "./BlockData";
-import blocks from "./bc-child.vue"
-
 import { AxiosError } from "axios";
 
 //Response data types
 import { regResponse } from "./regResponse"
 
-@Component({ components: { "vote-child": votingBlock, "bc-child": blocks } }) //define the element that will be used in the html above
+@Component({ components: { "vote-child": votingBlock} }) //define the element that will be used in the html above
 export default class VoteParent extends Vue {
   /////////////////////////////VOTING////////////////////////////////////////////
     private arrBallotData: BallotData[] = [
@@ -132,9 +99,7 @@ export default class VoteParent extends Vue {
     private voterName = "";
 
     //Backend Server
-    //private defaultServerAddress = "https://cors-anywhere.herokuapp.com/https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
-    //private defaultServerAddress = "http://localhost:3000";
 
     validateKey(){
       //Validate the uvid key by making a get call to the backend
@@ -167,22 +132,20 @@ export default class VoteParent extends Vue {
     getAll() {
       //console.log("getall");
 
-      const endpoint = "http://localhost:3000/proposals"; //this.defaultServerAddress + "/proposals";
+      const endpoint = this.defaultServerAddress + "get-ballot";
       this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
       .then((response) => {
-        const result = response.data;
-        //The data is packaged into a data structure to reduce the number of calls required
-        //and give the ballot an easy to find id. see the ballot designer for details
-        this.arrBallotData = result[0].data; 
-       //console.log("data:", result)
-
+        console.log(JSON.parse(response.data.Item.info.data))
+        this.arrBallotData = JSON.parse(response.data.Item.info.data)
         this.showBallot = true;
       });
   }
 
     vote(){
-        const voteData = JSON.stringify(this.arrBallotData)
+        const voteData = encodeURI(JSON.stringify(this.arrBallotData))
+        //const voteData = JSON.stringify(this.arrBallotData)
         //create block 
+        /*
         const newBlock = {
           //id: this.arrBlocks[this.arrBlocks.length-1].,
           id: this.arrBlockData.length,
@@ -195,6 +158,7 @@ export default class VoteParent extends Vue {
         
         this.arrBlockData.push(newBlock);
         //send data to miner here
+        */
     }
 
     reset() {
@@ -203,29 +167,6 @@ export default class VoteParent extends Vue {
           i.selected = "";
         }
     }
-
-
-/////////////////////Block Data/////////////////////////////////////////////////
-    private arrBlockData: BlockData[] = [
-      {
-      id: 0,
-      parenthash: "0000000000000000",
-      data: "Root Block",
-      nonce: 0,
-      blockhash: "1111111111111111",
-      valid: true
-      }  
-    ]
-
-    mineBlock(){
-        //create block and send data to miner here
-    }
-
-    deleteBlock(){
-        //create block and send data to miner here
-    }
-
-
 
 }
 </script>

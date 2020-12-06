@@ -1,21 +1,21 @@
 <template>
   <div>
     <b-container>
-      <events-parent></events-parent>
-    </b-container>
+      <voting></voting>
+    </b-container> 
   </div>
 </template>
   
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import EventsParent from '@/components/EventsDemo/EventsParent.vue'
+import VotingParent from "@/components/BlockChain/bc-parent.vue"
 
 @Component({
-  components: {"events-parent":EventsParent}
+  components: {"voting": VotingParent}
 })
-export default class EventsView extends Vue {
-  @Prop() private msg!: string;
+export default class BCView extends Vue {
+
 }
 </script>
 

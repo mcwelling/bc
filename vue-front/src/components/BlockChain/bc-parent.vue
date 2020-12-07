@@ -16,9 +16,18 @@
          </b-card>
          <!-- Get Blocks -->
         <b-card bg-variant="dark" text-variant="white">
-          <b-button variant="primary" class="ml-2" @click="getBlocks()">
-            <b-spinner small v-show="showSpinner"></b-spinner>
-            <b> Get Blocks</b></b-button>
+          <b-row align-h="center">
+            <b-col cols="4">
+              <b-button variant="primary" class="ml-2" @click="getBlocks()">
+                <b-spinner small v-show="showSpinner"></b-spinner>
+                <b> Get Blocks</b></b-button>
+              </b-col>
+            <b-col cols="4">
+              <b-button variant="danger" class="ml-2" @click="clearChain()">
+                <b-spinner small v-show="showSpinner2"></b-spinner>
+                <b> Clear Chain</b></b-button>
+              </b-col>
+          </b-row>
         </b-card>
          <!-- Block Data -->
         <b-card class="mt-3" bg-variant="dark" text-variant="white">
@@ -60,6 +69,7 @@ import votingBlock from "./voting-child.vue";
 
 import { BlockData } from "./BlockData";
 import { updateMsg } from "./BlockData";
+import { getResponse } from "./BlockData";
 import blocks from "./bc-child.vue"
 
 import { AxiosError } from "axios";
@@ -71,16 +81,17 @@ export default class VoteParent extends Vue {
 
     //UI
     private showSpinner = false;
+    private showSpinner2 = false;
     private showSuccess = false;
     private showFail = false;
 
     //Backend Server
-    private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/get-blocks";
+    private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
 
     private arrBlockData: BlockData[] = [
-      {
+     /* {
       id: 0,
-      blockid: "ef59ccef9c4e259478446a5458f315e1da2afa028e1e6ebfe9b46c33f42c232a",
+      blockid: "0000000000000000000000000000000000000000000000000000000000000000",
       parenthash: "0000000000000000000000000000000000000000000000000000000000000000",
       data: "Root Block",
       nonce: "0",
@@ -112,16 +123,33 @@ export default class VoteParent extends Vue {
       data: "b3",
       nonce: "0",
       blockhash: "waiting",
-      valid: true
-      }
+      valid: true,
+      }*/
     ]
 
     getBlocks(){
       this.showSpinner = true;
-      const endpoint = this.defaultServerAddress;
+      const endpoint = this.defaultServerAddress + "get-blocks";
+      console.log(endpoint)
       this.$http.get<any>(endpoint)
       .then((response) =>{
-        this.arrBlockData = response.data;
+        console.log(response.data.body)
+        const arrTemp: getResponse[] = JSON.parse(response.data.body);
+        for(const i in arrTemp){
+          const temp: BlockData = {
+              id: i,
+              blockid: arrTemp[i].voter_id,
+              parenthash: arrTemp[i].parent_hash,
+              data: arrTemp[i].ballot,
+              nonce: "Not Stored",
+              blockhash: arrTemp[i].block_hash,
+              valid: true,
+          }
+          console.log(temp)
+          this.arrBlockData.push(temp)
+        }
+        console.log(arrTemp);
+        //this.arrBlockData = arrTemp;
         this.showSuccess = true;
         this.showFail = false;
       })
@@ -133,6 +161,26 @@ export default class VoteParent extends Vue {
       })
       .finally(()=>{
         this.showSpinner = false;
+      })
+    }
+
+    clearChain(){
+      this.showSpinner2 = true;
+      const endpoint = this.defaultServerAddress + "reset-chain";
+      this.$http.get<any>(endpoint)
+      .then((response) =>{
+        this.arrBlockData = [];
+        //this.showSuccess = true;
+        //this.showFail = false;
+      })
+      .catch((err: AxiosError) =>{
+        console.log(err);
+        //this.arrBlockData = [];
+        //this.showFail = true;
+        //this.showSuccess = false;
+      })
+      .finally(()=>{
+        this.showSpinner2 = false;
       })
     }
 

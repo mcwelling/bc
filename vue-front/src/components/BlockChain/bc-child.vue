@@ -7,20 +7,6 @@
             </b-row>
             <b-card-text>
                 <b-container>
-                    <!-- Block ID -->
-                    <b-row class="my-1">
-                        <b-col sm="3" class="text-left">
-                        <label>Block ID:</label>
-                        </b-col>
-                        <b-col sm="9">
-                        <b-form-textarea 
-                        size="sm" 
-                        rows="2" 
-                        max-rows="3" 
-                        v-model="cardData.blockid" 
-                        readonly></b-form-textarea>
-                        </b-col>
-                    </b-row>
                     <!-- ParentHash -->
                     <b-row class="my-1">
                         <b-col sm="3" class="text-left">
@@ -32,6 +18,20 @@
                         rows="2" 
                         max-rows="3" 
                         v-model="cardData.parenthash" 
+                        readonly></b-form-textarea>
+                        </b-col>
+                    </b-row>
+                    <!-- Block ID -->
+                    <b-row class="my-1">
+                        <b-col sm="3" class="text-left">
+                        <label>Block ID:</label>
+                        </b-col>
+                        <b-col sm="9">
+                        <b-form-textarea 
+                        size="sm" 
+                        rows="2" 
+                        max-rows="3" 
+                        v-model="cardData.blockid" 
                         readonly></b-form-textarea>
                         </b-col>
                     </b-row>
@@ -80,7 +80,7 @@
                         <b-row>
                             <b-col >
                             <b-button
-                                :disabled="!cardDataChanged"
+                                :disabled="valid"
                                 variant="primary"
                                 size="sm"
                                 @click="mine()"
@@ -106,16 +106,31 @@ export default class EventsChild extends Vue {
     @Prop() private cardData!: BlockData; 
     @Prop() private cardIndex!: number;
     private valid = true; 
-    private cardDataChanged = false;
+    //private cardDataChanged = false;
     private mined = false;
+    private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
 
     //@Emit('mine')
     mine() {
-        this.cardDataChanged = false
+        //this.cardDataChanged = false
         this.valid = true
         this.cardData.blockhash = "mined";
         this.mined = true;
+        /*
         //return this.cardData
+        const voteData = encodeURI(JSON.stringify(this.cardData.data)) 
+        const suffix = "queue-vote?voter_id=" + this.cardData.blockid + "&payload=" + voteData;
+        //console.log(suffix);
+        const endpoint = this.defaultServerAddress + suffix;
+        //const voteData = JSON.stringify(this.arrBallotData)
+        this.$http.get<any>(endpoint)
+        .then((response) =>{
+          console.log(response)
+          this.cardDataChanged = false
+            this.valid = true
+            this.cardData.blockhash = "mined";
+            this.mined = true;
+        })*/
     }
     
     @Emit('delete')
@@ -133,10 +148,10 @@ export default class EventsChild extends Vue {
         
         if(this.mined === true){
             this.mined = false;
-            this.cardDataChanged = false;
+            //this.cardDataChanged = false;
         }
         else{
-            this.cardDataChanged = true;
+            //this.cardDataChanged = true;
             this.valid = false;
             this.cardData.blockhash = "Invalid"
         }

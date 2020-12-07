@@ -1,5 +1,5 @@
 export type BlockData = {
-    id: number;
+    id: string;
     blockid: string;
     parenthash: string;
     data: string;
@@ -10,3 +10,12 @@ export type BlockData = {
 export type updateMsg = {
     index: number;
     blockhash: string;};
+
+export type getResponse = {
+    constant: string;
+    voter_id: string;
+    parent_hash: string;
+    ballot: string;
+    block_hash: string;
+    timestamp: string;
+    };

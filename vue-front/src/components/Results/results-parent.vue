@@ -11,7 +11,7 @@
          <!-- Get Results Button -->
         <b-card bg-variant="dark" text-variant="white">
           <b-button variant="primary" class="ml-2" @click="getCounts()">
-            <b-spinner small v-show="showSpinner1"></b-spinner>
+            <b-spinner small v-show="showSpinner"></b-spinner>
             <b> Get Results</b></b-button>
         </b-card>
         <!-- Load in Ballot Data --> 
@@ -51,8 +51,6 @@ import resultsBlock from "./results-child.vue";
 import { BallotData } from "./BallotData";
 import { AxiosError } from "axios";
 
-//Response data types
-import { regResponse } from "./regResponse"
 
 @Component({ components: { "results-child": resultsBlock} }) //define the element that will be used in the html above
 export default class VoteParent extends Vue {
@@ -68,10 +66,7 @@ export default class VoteParent extends Vue {
     private showStatusBanner = false;
     private statusSuccess = false;
     private statusMsg = "";
-    private canVote = true;
-    private voterName = "";
-    private showSpinner1 = false;
-    private showSpinner2 = false;
+    private showSpinner = false;
 
     //Backend Server
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
@@ -79,6 +74,7 @@ export default class VoteParent extends Vue {
     //count-votes
 
     getCounts() {
+      this.showSpinner = true;
       const endpoint = this.defaultServerAddress + "get-ballot";
       this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
       .then((response) => {
@@ -87,27 +83,37 @@ export default class VoteParent extends Vue {
         this.getResults();
       })
       .catch((err: AxiosError) => {
-          this.showSpinner1 = false;
+          this.showSpinner = false;
           console.log("Failed")
           console.log(err.response)
+          this.statusSuccess = false;
+          this.showStatusBanner = true;
+          this.statusMsg = "Failed to retrieve ballot data. Please check network connection";
           //Show a not found message here
         });
       }
 
     getResults(){
       const endpoint = this.defaultServerAddress + "count-votes";
-      //console.log(endpoint)
+      console.log(endpoint)
       this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
       .then((response) => {
         console.log(JSON.parse(response.data.body))
         this.arrBallotResults = JSON.parse(response.data.body)
         this.showBallot = true;
-        this.showSpinner1 = false;
+        this.showSpinner = false;
+
+        this.statusSuccess = true;
+        this.showStatusBanner = true;
+        this.statusMsg = "Retrieved results.";
       })
       .catch((err: AxiosError) => {
-          this.showSpinner1 = false;
+          this.showSpinner = false;
           console.log("Get Results Failed")
           console.log(err.response)
+          this.statusSuccess = false;
+          this.showStatusBanner = true;
+          this.statusMsg = "Failed to retrieve vote counts. Please check network connection";
           //Show a not found message here
         });
     }

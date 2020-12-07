@@ -2,22 +2,19 @@
   <div>
     <div class="row">
       <b-container>
-         <!-- Failed to create ballot-->
-         <b-card title="Error" class="mt-3" bg-variant="danger" text-variant="white" v-show="showFail">
+         <!-- Response Banner -->
+         <b-card :title="statusSuccess ? 'Success' : 'Error'" class="mt-3" 
+         :bg-variant="statusSuccess ? 'success' : 'danger'" text-variant="white" 
+         v-show="showStatusBanner">
           <b-card-text>
-            Unable to create ballot. <br/> Please ensure that you are connected to the internet.
-          </b-card-text>
-         </b-card>
-          <!-- UVID Found -->
-         <b-card title="Success" class="mt-3" bg-variant="success" text-variant="white" v-show="showSuccess">
-          <b-card-text>
-            Ballot successfully created.
+            {{statusMsg}}
           </b-card-text>
          </b-card>
         <!-- Create Poll Card --> 
         <b-card title="Create a Ballot" class="col-12" bg-variant="dark" text-variant="white">
           <b-card-text>
-            <b-row class="my-1">
+            Creating a new ballot will overwrite any existing ballot and clear all blockchain data.
+            <b-row class="mt-3">
               <b-col>
                   <b-button :variant="showHideConfig ? 'secondary' : 'primary'" class="ml-2" @click="showHideConfig = !showHideConfig"
                     >Create New Ballot</b-button>
@@ -53,7 +50,7 @@
             </b-row>
             <b-row class="mt-5">
               <b-col>
-                  <b-button variant="primary" class="ml-2" @click="createBallot()">
+                  <b-button variant="primary" class="ml-2" @click="clearChain()">
                     <b-spinner small v-show="showSpinner"></b-spinner>
                     <b> Create</b></b-button>
               </b-col>
@@ -74,7 +71,7 @@
 //Note: Prop and Emit are not used and can be removed if not used before generating the production build
 import { Component, Prop, Emit, Vue } from "vue-property-decorator";
 import configBlock from "./config-child.vue";
-import { BallotConfig } from "./BallotConfig";
+import { BallotConfig, updateData } from "./BallotConfig";
 import { AxiosError } from "axios";
 
 
@@ -83,18 +80,24 @@ export default class BlockParent extends Vue {
     private arrBallotConfigData: BallotConfig[] = [];
 
     showHideConfig = false;
-    writeInToggle = false;
     showSpinner = false;
-    showFail = false;
-    showSuccess = false;
+    
+    private statusSuccess = true;
+    private showStatusBanner = false;
+    private statusMsg = "";
     
     //JSON
     //private defaultServerAddress = "http://localhost:3000/proposals/";
       private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/"
 
-    onDeleteClass(c: BallotConfig) {
-    const x = this.arrBallotConfigData.indexOf(c) //this line would not scale well, but is suitable for prototyping
-    this.arrBallotConfigData.splice(x,1);
+    onDeleteClass(c: updateData) {
+      const i = c.index;
+      const bcLen = this.arrBallotConfigData.length;
+      this.arrBallotConfigData.splice(i,1);
+      //change the id to activate the child @watch
+      for(const j in this.arrBallotConfigData){
+        this.arrBallotConfigData[j].id = -1;
+      }
     }
 
     deleteAll() {
@@ -102,21 +105,29 @@ export default class BlockParent extends Vue {
     this.showHideConfig = false; 
     }
 
+    clearChain(){
+      console.log("Clearing blockchain...")
+      this.showSpinner = true;
+      const endpoint = this.defaultServerAddress + "reset-chain";
+      this.$http.get<any>(endpoint)
+      .then((response) =>{
+        this.createBallot();
+      })
+      .catch((err: AxiosError) =>{
+        console.log(err);
+        this.statusSuccess = false;
+        this.showStatusBanner = true;
+        this.statusMsg = "Unable to clear chain. Please check network connection";
+      })
+    }
+
     createBallot() {
       //update UI
       this.showSpinner = true;
       const deleteEndpoint = this.defaultServerAddress + "delete-ballot"
       const sendEndpoint = this.defaultServerAddress + "set-ballot?data=" + encodeURI(JSON.stringify(this.arrBallotConfigData)) //this.arrBallotConfigData
-      /*
-      this.$http.get(endpoint)
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((err: AxiosError)=> {
-        console.log(err)
-      })
-     */
-      console.log("deleting...")
+
+      console.log("Deleting old ballot...")
       //this.deleteAll(); // delete the last config
       this.$http
       .get(deleteEndpoint) 
@@ -128,16 +139,20 @@ export default class BlockParent extends Vue {
             //UI updates
             this.showSpinner = false;
             this.showHideConfig = false;
-            this.showFail = false;
-            this.showSuccess = true;
+            
+            this.statusSuccess = true;
+            this.showStatusBanner = true;
+            this.statusMsg = "Ballot created. All blockchain data has been cleared";
           })
           .catch((err: AxiosError)=> {
             console.log(err)
             //UI updates
             this.showHideConfig = false;
             this.showSpinner = false;
-            this.showFail = true;
-            this.showSuccess = false;
+            
+            this.statusSuccess = false;
+            this.showStatusBanner = true;
+            this.statusMsg = "Unable to create ballot. Please check network connection";
           })
       }) 
     }
@@ -150,16 +165,12 @@ export default class BlockParent extends Vue {
             proposal: "",
             options: empty,
             selected: "" 
-            /*selected isn't actually used in this module but it makes it easier for the voting module to use the data 
-            straight out of the json server. It may be more faithful to the idea of modularization to remove selected
-            and handle it on the voting end*/
         }  
         this.arrBallotConfigData.push(newCard);
     }
 
     reset() {
         this.showHideConfig = false;
-        this.writeInToggle = false;
         this.arrBallotConfigData = []; 
     }
 }

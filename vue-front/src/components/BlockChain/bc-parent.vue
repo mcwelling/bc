@@ -2,21 +2,19 @@
   <div>
     <div class="row">
       <b-container>
-        <!-- Failed to retrieve blocks-->
-         <b-card title="Error" class="mt-3" bg-variant="danger" text-variant="white" v-show="showFail">
+         <!-- Response Banner -->
+         <b-card :title="statusSuccess ? 'Success' : 'Error'" class="mt-3" 
+         :bg-variant="statusSuccess ? 'success' : 'danger'" text-variant="white" 
+         v-show="showStatusBanner">
           <b-card-text>
-            Unable to retrieve blocks. <br/> Please ensure that you are connected to the internet.
-          </b-card-text>
-         </b-card>
-          <!-- UVID Found -->
-         <b-card title="Success" class="mt-3" bg-variant="success" text-variant="white" v-show="showSuccess">
-          <b-card-text>
-            Blocks retrieved.
+            {{statusMsg}}
           </b-card-text>
          </b-card>
          <!-- Get Blocks -->
-        <b-card bg-variant="dark" text-variant="white">
-          <b-row align-h="center">
+        <b-card title="Blockchain" bg-variant="dark" text-variant="white">
+          This module provides a visualization of the blockchain data.
+          <br/>Altering data and re-mining blocks here will not affect the data stored in the backend. 
+          <b-row class="mt-5" align-h="center">
             <b-col cols="4">
               <b-button variant="primary" class="ml-2" @click="getBlocks()">
                 <b-spinner small v-show="showSpinner"></b-spinner>
@@ -82,8 +80,10 @@ export default class VoteParent extends Vue {
     //UI
     private showSpinner = false;
     private showSpinner2 = false;
-    private showSuccess = false;
-    private showFail = false;
+
+    private statusSuccess = true;
+    private showStatusBanner = false;
+    private statusMsg = "";
 
     //Backend Server
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
@@ -99,6 +99,7 @@ export default class VoteParent extends Vue {
       .then((response) =>{
         //console.log(response.data.body)
         const arrTemp: getResponse[] = JSON.parse(response.data.body);
+        //map response block data to local array
         for(const i in arrTemp){
           if(i === "0"){
             continue;
@@ -115,15 +116,17 @@ export default class VoteParent extends Vue {
          // console.log(temp)
           this.arrBlockData.push(temp)
         }
-        //console.log(arrTemp);
-        this.showSuccess = true;
-        this.showFail = false;
+        
+        this.statusSuccess = true;
+        this.showStatusBanner = true;
+        this.statusMsg = "Retrieved " + this.arrBlockData.length + " blocks";
       })
       .catch((err: AxiosError) =>{
         console.log(err);
         this.arrBlockData = [];
-        this.showFail = true;
-        this.showSuccess = false;
+        this.statusSuccess = false;
+        this.showStatusBanner = true;
+        this.statusMsg = "Unable to retrieve block data. Please check network connection";
       })
       .finally(()=>{
         this.showSpinner = false;
@@ -136,14 +139,15 @@ export default class VoteParent extends Vue {
       this.$http.get<any>(endpoint)
       .then((response) =>{
         this.arrBlockData = [];
-        //this.showSuccess = true;
-        //this.showFail = false;
+        this.statusSuccess = true;
+        this.showStatusBanner = true;
+        this.statusMsg = "Cleared chain and reset voter status";
       })
       .catch((err: AxiosError) =>{
         console.log(err);
-        //this.arrBlockData = [];
-        //this.showFail = true;
-        //this.showSuccess = false;
+        this.statusSuccess = false;
+        this.showStatusBanner = true;
+        this.statusMsg = "Unable to clear chain. Please check network connection";
       })
       .finally(()=>{
         this.showSpinner2 = false;

@@ -9,7 +9,12 @@
           </b-card-text>
          </b-card>
          <!-- Enter UVID and Get Ballot -->
-        <b-card bg-variant="dark" text-variant="white">
+        <b-card title="Voting Simulator" bg-variant="dark" text-variant="white">
+          The following voters have been pre-registered:
+          <br/>049fc8808dcf9f083c01040f76ab20c8e9b07a033242192c4381f3c82e663c0b
+          <br/>b5c01a531981eddadc42af2f744a08a6cd9d9024d7be6dae6b5f6d4a5f0513a9
+          <br/>eeafd6e402aeaef1b1f3367a14bd615085bfe91d68654d64e0f9968daf0c0217
+          
           <b-row class="my-3" align-h="center">
             <b-col  cols="8" >
               <b-form-input size="sm" v-model="uvid" placeholder="Please enter your Unique Voter ID" ></b-form-input>

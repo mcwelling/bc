@@ -3,7 +3,7 @@
         <b-card bg-variant="secondary" text-variant="white">
             <b-row align-h="between">
                 <!-- Title -->
-                <b-col cols="auto" ><strong>Proposal {{cardIndex}}</strong></b-col>
+                <b-col cols="auto" ><strong>Proposal {{cardData.id}}</strong></b-col>
                 <!-- Delete Button -->
                 <b-col cols="auto" class="mb-2">
                     <b-button
@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import { Component, Prop, Emit, Watch, Vue } from "vue-property-decorator";
-import { BallotConfig } from "./BallotConfig";
+import { BallotConfig, updateData } from "./BallotConfig";
 
 @Component
 export default class EventsChild extends Vue {
@@ -53,15 +53,15 @@ export default class EventsChild extends Vue {
     private cardDataChanged = false
 
     @Emit('delete')
-    deleteProposal() {
-        return this.cardData
+    deleteProposal(): updateData {
+        return {index: this.cardIndex, data: this.cardData }
     }
 
-    @Watch('cardIndex', {deep: true})
+    @Watch('cardData.id', {deep: true})
     onCardDataChanged(){
-        console.log(this.cardData.id);
-        this.cardData.id = this.cardIndex;
-        console.log(this.cardData.id);
+        //console.log("old", this.cardData.id);
+        this.cardData.id = this.cardIndex+1;
+        //console.log("new", this.cardData.id);
     }
 
     addOption(){

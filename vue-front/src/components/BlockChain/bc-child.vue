@@ -44,7 +44,7 @@
                         <b-form-textarea  
                         size="sm" 
                         rows="2" 
-                        max-rows="5" 
+                        max-rows="10" 
                         v-model="cardData.data"></b-form-textarea>
                         </b-col>
                     </b-row>
@@ -116,21 +116,24 @@ export default class EventsChild extends Vue {
         this.valid = true
         this.cardData.blockhash = "mined";
         this.mined = true;
-        /*
-        //return this.cardData
+        
+        //return this.cardDat
+
         const voteData = encodeURI(JSON.stringify(this.cardData.data)) 
+        console.log(this.cardData.blockid)
+        console.log(voteData)
         const suffix = "queue-vote?voter_id=" + this.cardData.blockid + "&payload=" + voteData;
         //console.log(suffix);
         const endpoint = this.defaultServerAddress + suffix;
         //const voteData = JSON.stringify(this.arrBallotData)
         this.$http.get<any>(endpoint)
         .then((response) =>{
-          console.log(response)
-          this.cardDataChanged = false
+          console.log(response.data)
+          //this.cardDataChanged = false
             this.valid = true
             this.cardData.blockhash = "mined";
             this.mined = true;
-        })*/
+        })
     }
     
     @Emit('delete')

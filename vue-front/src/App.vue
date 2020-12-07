@@ -8,6 +8,7 @@
       <router-link to="/designer">Ballot Designer</router-link> |
       <router-link to="/voting">Voting Simulator</router-link> |
       <router-link to="/bcView">Blockchain Viewer</router-link> |
+      <router-link to="/results">Results</router-link> |
     </div>
     <router-view/>
   </div>

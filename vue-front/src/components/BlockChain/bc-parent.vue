@@ -32,9 +32,9 @@
          <!-- Block Data -->
         <b-card class="mt-3" bg-variant="dark" text-variant="white">
           <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-button block v-b-toggle.accordion-1 variant="dark"><strong>Blocks</strong></b-button>
+            <b-button block v-b-toggle.accordion-1  variant="dark"><strong>Blocks</strong></b-button>
           </b-card-header>
-        <b-collapse id="accordion-1"  accordion="my-accordion" role="tabpanel">
+        <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
           <hr style="background-color:grey"/>
           <!-- Block Chain -->
           <div class="row">
@@ -88,54 +88,21 @@ export default class VoteParent extends Vue {
     //Backend Server
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
 
-    private arrBlockData: BlockData[] = [
-     /* {
-      id: 0,
-      blockid: "0000000000000000000000000000000000000000000000000000000000000000",
-      parenthash: "0000000000000000000000000000000000000000000000000000000000000000",
-      data: "Root Block",
-      nonce: "0",
-      blockhash: "11111111111111111111111111111111111111111111111111111111111111111",
-      valid: true
-      },  
-      {
-      id: 1,
-      blockid: "ef59ccef9c4e259478446a5458f315e1da2afa028e1e6ebfe9b46c33f42c232b",
-      parenthash: "wating",
-      data: "b1",
-      nonce: "0",
-      blockhash: "waiting",
-      valid: true
-      },
-      {
-      id: 2,
-      blockid: "ef59ccef9c4e259478446a5458f315e1da2afa028e1e6ebfe9b46c33f42c232c",
-      parenthash: "waiting",
-      data: "b2",
-      nonce: "0",
-      blockhash: "waiting",
-      valid: true
-      },
-      {
-      id: 3,
-      blockid: "ef59ccef9c4e259478446a5458f315e1da2afa028e1e6ebfe9b46c33f42c232d",
-      parenthash: "waiting",
-      data: "b3",
-      nonce: "0",
-      blockhash: "waiting",
-      valid: true,
-      }*/
-    ]
+    private arrBlockData: BlockData[] = []
 
     getBlocks(){
+      this.arrBlockData = [];
       this.showSpinner = true;
       const endpoint = this.defaultServerAddress + "get-blocks";
-      console.log(endpoint)
+      //console.log(endpoint)
       this.$http.get<any>(endpoint)
       .then((response) =>{
-        console.log(response.data.body)
+        //console.log(response.data.body)
         const arrTemp: getResponse[] = JSON.parse(response.data.body);
         for(const i in arrTemp){
+          if(i === "0"){
+            continue;
+          }
           const temp: BlockData = {
               id: i,
               blockid: arrTemp[i].voter_id,
@@ -145,11 +112,10 @@ export default class VoteParent extends Vue {
               blockhash: arrTemp[i].block_hash,
               valid: true,
           }
-          console.log(temp)
+         // console.log(temp)
           this.arrBlockData.push(temp)
         }
-        console.log(arrTemp);
-        //this.arrBlockData = arrTemp;
+        //console.log(arrTemp);
         this.showSuccess = true;
         this.showFail = false;
       })

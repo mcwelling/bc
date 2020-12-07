@@ -5,11 +5,13 @@ export type BlockData = {
     data: string;
     nonce: string;
     blockhash: string;
-    valid: boolean};
+    valid: boolean;
+    parentValid: boolean;};
 
 export type updateMsg = {
     index: number;
-    blockhash: string;};
+    blockhash: string;
+    valid: boolean;};
 
 export type getResponse = {
     constant: string;

@@ -13,12 +13,14 @@
          <!-- Get Blocks -->
         <b-card title="Blockchain" bg-variant="dark" text-variant="white">
           This module provides a visualization of the blockchain data.
-          <br/>Altering data and re-mining blocks here will not affect the data stored in the backend. 
+          <br/>Altering and re-mining blocks here will not affect the data stored in the backend. 
+          <br/>Clearing the chain will erase the blockchain data in the backend and reset the vote status 
+          for registered voters.
           <b-row class="mt-5" align-h="center">
             <b-col cols="4">
               <b-button variant="primary" class="ml-2" @click="getBlocks()">
                 <b-spinner small v-show="showSpinner"></b-spinner>
-                <b> Get Blocks</b></b-button>
+                <b> {{btnText}}</b></b-button>
               </b-col>
             <b-col cols="4">
               <b-button variant="danger" class="ml-2" @click="clearChain()">
@@ -84,6 +86,7 @@ export default class VoteParent extends Vue {
     private statusSuccess = true;
     private showStatusBanner = false;
     private statusMsg = "";
+    private btnText = "Get Blocks";
 
     //Backend Server
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
@@ -112,6 +115,7 @@ export default class VoteParent extends Vue {
               nonce: arrTemp[i].nonce,
               blockhash: arrTemp[i].block_hash,
               valid: true,
+              parentValid: true,
           }
          // console.log(temp)
           this.arrBlockData.push(temp)
@@ -120,6 +124,7 @@ export default class VoteParent extends Vue {
         this.statusSuccess = true;
         this.showStatusBanner = true;
         this.statusMsg = "Retrieved " + this.arrBlockData.length + " blocks";
+        this.btnText = "Reset Blocks"
       })
       .catch((err: AxiosError) =>{
         console.log(err);
@@ -142,6 +147,7 @@ export default class VoteParent extends Vue {
         this.statusSuccess = true;
         this.showStatusBanner = true;
         this.statusMsg = "Cleared chain and reset voter status";
+        this.btnText = "Get Blocks"
       })
       .catch((err: AxiosError) =>{
         console.log(err);
@@ -157,10 +163,12 @@ export default class VoteParent extends Vue {
     updateBlocks(msg: updateMsg){
         const i = msg.index;
         const hash = msg.blockhash;
+        const pValid = msg.valid;
         const bcLen = this.arrBlockData.length;
 
         if((bcLen > 0) && (i < bcLen-1)){
           this.arrBlockData[i+1].parenthash = hash;
+          this.arrBlockData[i+1].parentValid = pValid;
         }
     }
 

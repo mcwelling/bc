@@ -96,6 +96,7 @@
   
 
 <script lang="ts">
+import { AxiosError } from "axios";
 import { Component, Prop, Emit, Watch, Vue } from "vue-property-decorator";
 import { BlockData } from "./BlockData";
 import { updateMsg } from "./BlockData";
@@ -114,25 +115,31 @@ export default class EventsChild extends Vue {
     mine() {
         //this.cardDataChanged = false
         this.valid = true
-        this.cardData.blockhash = "mined";
+        this.cardData.blockhash = "mining...";
         this.mined = true;
         
         //return this.cardDat
 
         const voteData = encodeURI(JSON.stringify(this.cardData.data)) 
-        console.log(this.cardData.blockid)
-        console.log(voteData)
-        const suffix = "queue-vote?voter_id=" + this.cardData.blockid + "&payload=" + voteData;
+        //console.log(this.cardData.blockid)
+        
+        const suffix = "re-mine-block?voter_id=" + this.cardData.blockid + "&ballot=" + voteData + "&parent_hash=" + this.cardData.parenthash;
         //console.log(suffix);
         const endpoint = this.defaultServerAddress + suffix;
+        console.log(endpoint)
         //const voteData = JSON.stringify(this.arrBallotData)
         this.$http.get<any>(endpoint)
         .then((response) =>{
-          console.log(response.data)
+          console.log("hash", response.data.blockHash)
+          console.log("nonce", response.data.nonce)
           //this.cardDataChanged = false
-            this.valid = true
-            this.cardData.blockhash = "mined";
-            this.mined = true;
+           this.valid = true
+           this.cardData.blockhash = response.data.blockHash;
+           this.cardData.nonce = response.data.nonce; 
+           this.mined = true;
+        })
+        .catch((err: AxiosError) =>{
+            console.log(err)
         })
     }
     

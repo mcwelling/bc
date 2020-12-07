@@ -20,12 +20,9 @@
                         <b-col>
                                 {{cardResults[index]}}
                         </b-col>
-
                     </b-row>
                 </b-container>
             </b-card-text>
-            <b-button variant="primary" class="ml-2" @click="test()">
-            <b> Get Results</b></b-button>
         </b-card>
     </div>
 </template>

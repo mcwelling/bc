@@ -108,7 +108,7 @@ export default class VoteParent extends Vue {
               blockid: arrTemp[i].voter_id,
               parenthash: arrTemp[i].parent_hash,
               data: arrTemp[i].ballot,
-              nonce: "Not Stored",
+              nonce: arrTemp[i].nonce,
               blockhash: arrTemp[i].block_hash,
               valid: true,
           }

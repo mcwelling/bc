@@ -101,13 +101,6 @@ export default class VoteParent extends Vue {
       .then((response) => {
         console.log(JSON.parse(response.data.body))
         this.arrBallotResults = JSON.parse(response.data.body)
-
-        for(const i in this.arrBallotResults){
-          for(const [key,value] of Object.entries(this.arrBallotResults[i])){
-          console.log(key, value)
-          }
-        }
-        
         this.showBallot = true;
         this.showSpinner1 = false;
       })

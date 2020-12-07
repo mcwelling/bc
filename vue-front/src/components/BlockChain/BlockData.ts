@@ -17,5 +17,6 @@ export type getResponse = {
     parent_hash: string;
     ballot: string;
     block_hash: string;
+    nonce: string;
     timestamp: string;
     };

@@ -20,12 +20,7 @@
                         <b-col>
                                 {{cardResults[index]}}
                         </b-col>
-                        <!--<b-row v-for="(key, value) in cardResults" :key="value">
-                            <b-col>
-                                {{cardResults[key]}}
-                                {{cardResults[value]}}
-                            </b-col>
-                        </b-row> -->
+
                     </b-row>
                 </b-container>
             </b-card-text>

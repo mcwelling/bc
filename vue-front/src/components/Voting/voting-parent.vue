@@ -117,10 +117,10 @@ export default class VoteParent extends Vue {
         //No user registered
         if(response.data.Item === undefined){
           console.log("Null")
-          this.statusMsg = "A user with the UVID " + this.uvid + "has not been registered."
+          this.statusMsg = "A user with the UVID '" + this.uvid + "' has not been registered."
           this.statusSuccess = false;
           this.showStatusBanner = true;
-
+          this.uvid = "";
           this.showSpinner1 = false;
         }
         //user found
@@ -139,6 +139,7 @@ export default class VoteParent extends Vue {
           else{
             this.statusMsg = this.statusMsg + " Our records show that you have already voted!"
             this.showSpinner1 = false;
+            this.uvid = "";
           }
           
         }
@@ -211,6 +212,7 @@ export default class VoteParent extends Vue {
         .finally(() => {
           this.showStatusBanner = true;
           this.showSpinner2 = false;
+          this.uvid = "";
         })
     }
 

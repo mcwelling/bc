@@ -59,9 +59,7 @@ export default class EventsChild extends Vue {
 
     @Watch('cardData.id', {deep: true})
     onCardDataChanged(){
-        //console.log("old", this.cardData.id);
         this.cardData.id = this.cardIndex+1;
-        //console.log("new", this.cardData.id);
     }
 
     addOption(){

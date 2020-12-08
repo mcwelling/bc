@@ -54,7 +54,7 @@
                 <b-col>
                     <!-- Street -->
                     <b-form-input
-                            id="input-3"
+                            id="Sreet"
                             v-model="VoterInfo.street"
                             required
                             placeholder="Street"
@@ -118,6 +118,7 @@
             </b-form>
           </b-card-text>
         </b-card>
+        <!-- Response Card -->
         <b-card title="Unique Voter ID" class="mt-3" bg-variant="dark" text-variant="white" v-show="showHideID">
           <b-card-text>
             Your Unique Voter ID (UVID) is {{uvid}} 
@@ -133,13 +134,13 @@
   
 
 <script lang="ts">
-//Note: Prop and Emit are not used and can be removed if not used before generating the production build
+
 import { AxiosError } from "axios";
-import { Component, Prop, Emit, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { RegData } from "./RegData";
 
 
-@Component //({ components: { "poll-child": configBlock } }) //define the element that will be used in the html above
+@Component 
 export default class RegParent extends Vue {
     private VoterInfo: RegData = {
         first: "", 
@@ -195,7 +196,7 @@ export default class RegParent extends Vue {
             this.showSpinner = false;
         })
         .catch((err: AxiosError) => {
-          console.log("Failed")
+          console.log("Failed", err)
           this.showSpinner = false;
         })
 

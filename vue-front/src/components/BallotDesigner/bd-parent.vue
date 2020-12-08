@@ -48,6 +48,7 @@
                     </div>
                 </b-col>
             </b-row>
+            <!-- Create and Cancel -->
             <b-row class="mt-5">
               <b-col>
                   <b-button variant="primary" class="ml-2" @click="clearChain()">
@@ -68,14 +69,14 @@
   
 
 <script lang="ts">
-//Note: Prop and Emit are not used and can be removed if not used before generating the production build
-import { Component, Prop, Emit, Vue } from "vue-property-decorator";
+
+import { Component, Vue } from "vue-property-decorator";
 import configBlock from "./config-child.vue";
 import { BallotConfig, updateData } from "./BallotConfig";
 import { AxiosError } from "axios";
 
 
-@Component({ components: { "poll-child": configBlock } }) //define the element that will be used in the html above
+@Component({ components: { "poll-child": configBlock } }) 
 export default class BlockParent extends Vue {
     private arrBallotConfigData: BallotConfig[] = [];
 
@@ -86,13 +87,10 @@ export default class BlockParent extends Vue {
     private showStatusBanner = false;
     private statusMsg = "";
     
-    //JSON
-    //private defaultServerAddress = "http://localhost:3000/proposals/";
-      private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/"
+    private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/"
 
     onDeleteClass(c: updateData) {
       const i = c.index;
-      const bcLen = this.arrBallotConfigData.length;
       this.arrBallotConfigData.splice(i,1);
       //change the id to activate the child @watch
       for(const j in this.arrBallotConfigData){
@@ -109,8 +107,8 @@ export default class BlockParent extends Vue {
       console.log("Clearing blockchain...")
       this.showSpinner = true;
       const endpoint = this.defaultServerAddress + "reset-chain";
-      this.$http.get<any>(endpoint)
-      .then((response) =>{
+      this.$http.get(endpoint)
+      .then(() =>{
         this.createBallot();
       })
       .catch((err: AxiosError) =>{
@@ -128,15 +126,15 @@ export default class BlockParent extends Vue {
       const sendEndpoint = this.defaultServerAddress + "set-ballot?data=" + encodeURI(JSON.stringify(this.arrBallotConfigData)) //this.arrBallotConfigData
 
       console.log("Deleting old ballot...")
-      //this.deleteAll(); // delete the last config
+
       this.$http
       .get(deleteEndpoint) 
-      .finally(() => { //Placing the post inside finally is important. otherwise the post could overlap with delete
+      .finally(() => { 
           console.log("Sending Ballot...")
           this.$http.get(sendEndpoint)
           .then((response) => {
             console.log(response)
-            //UI updates
+
             this.showSpinner = false;
             this.showHideConfig = false;
             
@@ -146,7 +144,7 @@ export default class BlockParent extends Vue {
           })
           .catch((err: AxiosError)=> {
             console.log(err)
-            //UI updates
+
             this.showHideConfig = false;
             this.showSpinner = false;
             

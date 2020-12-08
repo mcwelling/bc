@@ -4,8 +4,8 @@
       <!--
       <router-link to="/about">About</router-link> |-->
       <router-link to="/">Home</router-link> |
-      <router-link to="/register">Register</router-link> |
       <router-link to="/designer">Ballot Designer</router-link> |
+      <router-link to="/register">Register</router-link> |
       <router-link to="/voting">Voting Simulator</router-link> |
       <router-link to="/bcView">Blockchain Viewer</router-link> |
       <router-link to="/results">Results</router-link> |

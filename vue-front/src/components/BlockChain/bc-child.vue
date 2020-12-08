@@ -94,7 +94,6 @@ export default class EventsChild extends Vue {
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
 
     mine() {
-
         this.cardData.blockhash = "mining...";
         this.mined = true;
         
@@ -103,7 +102,7 @@ export default class EventsChild extends Vue {
         const endpoint = this.defaultServerAddress + suffix;
 
         //get new blockhash 
-        this.$http.get<any>(endpoint)
+        this.$http.get(endpoint)
         .then((response) =>{
            this.cardData.valid = true
            this.cardData.blockhash = response.data.blockHash;

@@ -45,14 +45,14 @@
   
 
 <script lang="ts">
-//Note: Prop and Emit are not used and can be removed if not used before generating the production build
-import { Component, Prop, Emit, Vue } from "vue-property-decorator";
+
+import { Component, Vue } from "vue-property-decorator";
 import resultsBlock from "./results-child.vue";
 import { BallotData } from "./BallotData";
 import { AxiosError } from "axios";
 
 
-@Component({ components: { "results-child": resultsBlock} }) //define the element that will be used in the html above
+@Component({ components: { "results-child": resultsBlock} }) 
 export default class VoteParent extends Vue {
 
     private arrBallotData: BallotData[] = [
@@ -71,14 +71,13 @@ export default class VoteParent extends Vue {
     //Backend Server
     private defaultServerAddress = "https://619egq74ea.execute-api.us-east-1.amazonaws.com/dev/api/";
 
-    //count-votes
+
 
     getCounts() {
       this.showSpinner = true;
       const endpoint = this.defaultServerAddress + "get-ballot";
-      this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
+      this.$http.get(endpoint) 
       .then((response) => {
-        //console.log(JSON.parse(response.data.Item.info.data))
         this.arrBallotData = JSON.parse(response.data.Item.info.data)
         this.getResults();
       })
@@ -89,14 +88,13 @@ export default class VoteParent extends Vue {
           this.statusSuccess = false;
           this.showStatusBanner = true;
           this.statusMsg = "Failed to retrieve ballot data. Please check network connection";
-          //Show a not found message here
         });
       }
 
     getResults(){
       const endpoint = this.defaultServerAddress + "count-votes";
       console.log(endpoint)
-      this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
+      this.$http.get(endpoint)
       .then((response) => {
         console.log(JSON.parse(response.data.body))
         this.arrBallotResults = JSON.parse(response.data.body)
@@ -114,7 +112,6 @@ export default class VoteParent extends Vue {
           this.statusSuccess = false;
           this.showStatusBanner = true;
           this.statusMsg = "Failed to retrieve vote counts. Please check network connection";
-          //Show a not found message here
         });
     }
 

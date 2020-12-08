@@ -64,9 +64,7 @@
 
 <script lang="ts">
 //Note: Prop and Emit are not used and can be removed if not used before generating the production build
-import { Component, Prop, Emit, Vue } from "vue-property-decorator";
-import votingBlock from "./voting-child.vue";
-
+import { Component, Vue } from "vue-property-decorator";
 import { BlockData } from "./BlockData";
 import { updateMsg } from "./BlockData";
 import { getResponse } from "./BlockData";
@@ -98,9 +96,8 @@ export default class VoteParent extends Vue {
       this.showSpinner = true;
       const endpoint = this.defaultServerAddress + "get-blocks";
       //console.log(endpoint)
-      this.$http.get<any>(endpoint)
+      this.$http.get(endpoint)
       .then((response) =>{
-        //console.log(response.data.body)
         const arrTemp: getResponse[] = JSON.parse(response.data.body);
         //map response block data to local array
         for(const i in arrTemp){
@@ -141,7 +138,7 @@ export default class VoteParent extends Vue {
     clearChain(){
       this.showSpinner2 = true;
       const endpoint = this.defaultServerAddress + "reset-chain";
-      this.$http.get<any>(endpoint)
+      this.$http.get(endpoint)
       .then((response) =>{
         this.arrBlockData = [];
         this.statusSuccess = true;

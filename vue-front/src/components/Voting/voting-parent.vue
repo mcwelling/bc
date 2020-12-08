@@ -33,16 +33,10 @@
                 <b-col>
                     <hr style="background-color:grey"/>
                     <div class="row">
-                        <!-- This v-for handles the actual display of the data in the array, arrBallotData -->
-                        <!-- block is represents the value (type BallotData) in the array -->
                         <div
                         class="col-sm-6 mb-2"
                         v-for="(block, index) in arrBallotData" 
-                        :key="index"
-                        >
-                        <!-- :card-data="block" passes pollData from the above v-for into the vote-child
-                        @delete tells the parent to look out for the @delete emit event from the child and calls the onDeleteClass method.
-                        Note: the custom element "vote-child" directly corresponds with the definition in the ts script-->
+                        :key="index">
                             <vote-child
                             :card-data="block"
                             ></vote-child>
@@ -77,8 +71,8 @@
 
 
 <script lang="ts">
-//Note: Prop and Emit are not used and can be removed if not used before generating the production build
-import { Component, Prop, Emit, Vue } from "vue-property-decorator";
+
+import { Component, Vue } from "vue-property-decorator";
 import votingBlock from "./voting-child.vue";
 import { BallotData } from "./BallotData";
 import { AxiosError } from "axios";
@@ -86,9 +80,8 @@ import { AxiosError } from "axios";
 //Response data types
 import { regResponse } from "./regResponse"
 
-@Component({ components: { "vote-child": votingBlock} }) //define the element that will be used in the html above
+@Component({ components: { "vote-child": votingBlock} }) 
 export default class VoteParent extends Vue {
-  /////////////////////////////VOTING////////////////////////////////////////////
     private arrBallotData: BallotData[] = [
         //Array of proposals on the ballot
     ];
@@ -150,7 +143,6 @@ export default class VoteParent extends Vue {
           this.statusMsg = "Please enter a valid UVID.";
           this.statusSuccess = false;
           this.showStatusBanner = true;
-          //Show a not found message here
         })
 
     }
@@ -160,7 +152,7 @@ export default class VoteParent extends Vue {
       this.showSpinner2 = true;
       const endpoint = this.defaultServerAddress + "set-reg-status?voter_id=" + this.uvid;
       this.$http.get(endpoint)
-      .then((response) => {
+      .then(() => {
           this.canVote = true;
           this.vote();
       })
@@ -171,10 +163,8 @@ export default class VoteParent extends Vue {
 
 
     getAll() {
-      //console.log("getall");
-
       const endpoint = this.defaultServerAddress + "get-ballot";
-      this.$http.get<any>(endpoint) // use any to make it easy to change and test the data structures
+      this.$http.get(endpoint)
       .then((response) => {
         console.log(JSON.parse(response.data.Item.info.data))
         this.arrBallotData = JSON.parse(response.data.Item.info.data)
@@ -185,18 +175,16 @@ export default class VoteParent extends Vue {
           this.showSpinner1 = false;
           console.log("Failed")
           console.log(err.response)
-          //Show a not found message here
         });
       }
       
-    //FIXME: Make this prettier 
+
     vote(){
         const voteData = encodeURI(JSON.stringify(this.arrBallotData)) 
         const suffix = "queue-vote?voter_id=" + this.uvid + "&payload=" + voteData;
-        //console.log(suffix);
         const endpoint = this.defaultServerAddress + suffix;
-        //const voteData = JSON.stringify(this.arrBallotData)
-        this.$http.get<any>(endpoint)
+
+        this.$http.get(endpoint)
         .then((response) =>{
           console.log(response)
           this.showBallot = false;
@@ -218,7 +206,6 @@ export default class VoteParent extends Vue {
 
     reset() {
         for (const i of this.arrBallotData){
-          //console.log(i.selected);
           i.selected = "";
         }
     }

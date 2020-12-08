@@ -34,21 +34,8 @@ import { BallotData } from "./BallotData";
 @Component
 export default class EventsChild extends Vue {
 
-    @Prop() private cardData!: BallotData; //!: means can't be null
+    @Prop() private cardData!: BallotData; 
     private cardDataChanged = false
-
-    /*
-    @Emit('delete')
-    deleteProposal() {
-        return this.cardData
-    }
-
-    @Watch('cardData', {immediate: false, deep: true})
-    onCardDataChanged(){
-        this.cardDataChanged = true
-    }
-    */
-
 }
 </script>
 

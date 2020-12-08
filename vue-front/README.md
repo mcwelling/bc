@@ -22,3 +22,7 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+# AWS Backend System
+
+Backend login credentials will be provided with the submission on Drexel Learn (Blackboard).

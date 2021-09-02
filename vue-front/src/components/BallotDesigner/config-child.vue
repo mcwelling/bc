@@ -43,23 +43,24 @@
 
 <script lang="ts">
 import { Component, Prop, Emit, Watch, Vue } from "vue-property-decorator";
-import { BallotConfig } from "./BallotConfig";
+import { BallotConfig, updateData } from "./BallotConfig";
 
 @Component
 export default class EventsChild extends Vue {
 
-    @Prop() private cardData!: BallotConfig; //!: means can't be null
+    @Prop() private cardData!: BallotConfig;
+    @Prop() private cardIndex!: number;
     private cardDataChanged = false
 
     @Emit('delete')
-    deleteProposal() {
-        return this.cardData
+    deleteProposal(): updateData {
+        return {index: this.cardIndex, data: this.cardData }
     }
 
-    /*@Watch('cardData', {immediate: false, deep: true})
+    @Watch('cardData.id', {deep: true})
     onCardDataChanged(){
-        this.cardDataChanged = true
-    }*/
+        this.cardData.id = this.cardIndex+1;
+    }
 
     addOption(){
         this.cardData.options.push("");

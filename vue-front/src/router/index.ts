@@ -24,43 +24,6 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/layout',
-    name: 'Layout',
-    component: LayoutView
-  },
-  {
-    path: '/events',
-    name: 'Events',
-    //component: () => import(/* webpackChunkName: "events" */ '../views/EventsView.vue')
-    component: EventView
-  },
-  {
-    path: '/dynamic',
-    name: 'Dynamic',
-    //component: () => import(/* webpackChunkName: "events" */ '../views/EventsView.vue')
-    component: DynamicView
-  },
-  {
-    path: '/webservices',
-    name: 'WebServices',
-    component: WebServicesView
-  },
-  {
-    path: '/simple_state',
-    name: 'SimpleState',
-    component: () => import(/* webpackChunkName: "state" */ '../views/AppSimpleState.vue')
-  },
-  {
-    path: '/bc',
-    name: 'BC',
-    component: () => import(/* webpackChunkName: "state" */ '../views/BCView.vue')
-  },
-  {
-    path: '/bc2',
-    name: 'BC2',
-    component: () => import(/* webpackChunkName: "state" */ '../views/BCView2.vue')
-  },
-  {
     path: '/designer',
     name: 'BallotDesigner',
     component: () => import(/* webpackChunkName: "state" */ '../views/BallotDesigner.vue')
@@ -69,6 +32,21 @@ const routes: Array<RouteConfig> = [
     path: '/voting',
     name: 'VotingSimulator',
     component: () => import(/* webpackChunkName: "state" */ '../views/Voting.vue')
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import(/* webpackChunkName: "state" */ '../views/Register.vue')
+  },
+  {
+    path: '/bcView',
+    name: 'BCView',
+    component: () => import(/* webpackChunkName: "state" */ '../views/BlockChain.vue')
+  },
+  {
+    path: '/results',
+    name: 'results',
+    component: () => import(/* webpackChunkName: "state" */ '../views/Results.vue')
   }
 ]
 

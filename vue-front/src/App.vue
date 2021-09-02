@@ -2,17 +2,13 @@
   <div id="app">
     <div id="nav">
       <!--
+      <router-link to="/about">About</router-link> |-->
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/layout">Layout</router-link> |
-      <router-link to="/events">Events</router-link> |
-      <router-link to="/dynamic">Dynamic</router-link> |
-      <router-link to="/webservices">Web Services</router-link> |
-      <router-link to="/simple_state">Simple State</router-link> | -->
-      <router-link to="/bc">BC</router-link> |
-      <router-link to="/bc2">BC2</router-link> |
       <router-link to="/designer">Ballot Designer</router-link> |
+      <router-link to="/register">Register</router-link> |
       <router-link to="/voting">Voting Simulator</router-link> |
+      <router-link to="/bcView">Blockchain Viewer</router-link> |
+      <router-link to="/results">Results</router-link> |
     </div>
     <router-view/>
   </div>

@@ -1,1 +1,0 @@
-export type BallotConfig = {id: number; proposal: string; options: string[]; selected: string};

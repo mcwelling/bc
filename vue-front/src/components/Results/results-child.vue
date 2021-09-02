@@ -1,9 +1,10 @@
 <template>
     <div>
+        
         <b-card bg-variant="secondary" text-variant="white">
             <b-row align-h="between">
                 <!-- Title -->
-                <b-col cols="auto"><strong>Proposal {{cardData.id}}</strong></b-col>
+                <b-col cols="auto"><strong>Proposal {{cardData.id}} Results</strong></b-col>
             </b-row>
             <b-card-text>
                 <b-container>
@@ -13,12 +14,13 @@
                     </b-row>
                     <hr style="background-color:white"/>
                     <!--Options list-->
-                    <b-row>
-                            <b-form-radio-group style="text-align:left" 
-                            v-model="cardData.selected"
-                            :options="cardData.options"
-                            stacked>
-                            </b-form-radio-group>
+                    <b-row v-for="(item, index) in cardResults" :key="index.value">
+                        <b-col>
+                                {{index}}
+                        </b-col>
+                        <b-col>
+                                {{cardResults[index]}}
+                        </b-col>
                     </b-row>
                 </b-container>
             </b-card-text>
@@ -29,12 +31,19 @@
 
 <script lang="ts">
 import { Component, Prop, Emit, Watch, Vue } from "vue-property-decorator";
-import { BallotData } from "./BallotData";
+import { BallotData, BallotResults } from "./BallotData";
 
 @Component
 export default class EventsChild extends Vue {
 
     @Prop() private cardData!: BallotData; 
+    @Prop() private cardResults!: [];
+
+    private arrResults = [];
+
+    test(){
+        console.log(this.cardResults)
+    }
     private cardDataChanged = false
 }
 </script>
